@@ -14,6 +14,209 @@ import {
 // INITIAL CONNECTED ENTERPRISE STATE (GOLDEN THREAD + REALISTIC ENTERPRISE DATA)
 // ============================================================================
 
+// ============================================================================
+// DEFAULT SUPPLY CHAIN DEMO DATA
+// ============================================================================
+
+const DEFAULT_SUPPLY_CHAIN_PLANS = [
+  {
+    id: 'SHP-88214',
+    name: 'Ocean — Shanghai → Rotterdam',
+    laneNode: 'NYK Line · 14 TEU',
+    quantity: '412 units',
+    eta: 'Oct 19',
+    status: 'At Risk',
+    agentTouched: true,
+    submodule: 'Demand Planning',
+    submoduleIdx: 0,
+    carrier: 'NYK Line',
+    origin: 'Shanghai Port (CNSHA)',
+    destination: 'Rotterdam Port (NLRTM)',
+    mode: 'Ocean Freight',
+    riskReason: 'Port congestion delay at Suez chokepoint (+4 days buffer exceeded)',
+    handlingAgent: 'Logistics Rerouter',
+    policy: 'POL-SCM-014',
+    firewallChecks: '8/8 checks passed',
+    evidenceHash: 'b49f28c1192e4088',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'SP-2026-W41',
+    name: 'Weekly supply plan — EMEA',
+    laneNode: 'Hamburg DC',
+    quantity: '18,400 units',
+    eta: 'Oct 12',
+    status: 'Approved',
+    agentTouched: true,
+    submodule: 'Supply Planning',
+    submoduleIdx: 1,
+    carrier: 'Kuehne+Nagel',
+    origin: 'Munich Manufacturing Plant',
+    destination: 'Hamburg Regional DC',
+    mode: 'Intermodal Logistics',
+    riskReason: 'Capacity constrained; reallocated from Leipzig warehouse buffer',
+    handlingAgent: 'Supply Planner',
+    policy: 'POL-SCM-011',
+    firewallChecks: '8/8 checks passed',
+    evidenceHash: 'c71289df4091a104',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'SHP-88231',
+    name: 'Air — Penang → Dallas',
+    laneNode: 'DHL Global',
+    quantity: '220 units',
+    eta: 'Oct 08',
+    status: 'In Progress',
+    agentTouched: true,
+    submodule: 'Logistics',
+    submoduleIdx: 2,
+    carrier: 'DHL Global Forwarding',
+    origin: 'Penang Chip Fab (MYPEN)',
+    destination: 'Dallas Fort Worth Hub (USDFW)',
+    mode: 'Air Cargo Express',
+    riskReason: 'Expedited consignment for priority server hardware replacement',
+    handlingAgent: 'Demand Sensing Agent',
+    policy: 'POL-SCM-012',
+    firewallChecks: '8/8 checks passed',
+    evidenceHash: '984102bc4501fd88',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'SP-2026-W42',
+    name: 'Weekly supply plan — APAC',
+    laneNode: 'Singapore DC',
+    quantity: '22,900 units',
+    eta: 'Oct 19',
+    status: 'Draft',
+    agentTouched: true,
+    submodule: 'Inventory',
+    submoduleIdx: 3,
+    carrier: 'Maersk Logistics',
+    origin: 'Shenzhen Hub',
+    destination: 'Singapore Regional DC',
+    mode: 'Ocean / Hub Transfer',
+    riskReason: 'Quarterly inventory rebalance draft under review',
+    handlingAgent: 'Supply Planner',
+    policy: 'POL-SCM-015',
+    firewallChecks: '8/8 checks passed',
+    evidenceHash: 'ea4019280bf61290',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'PRD-31008',
+    name: 'Production order — Line 4',
+    laneNode: 'Monterrey Plant',
+    quantity: '6,500 units',
+    eta: 'Oct 14',
+    status: 'Scheduled',
+    agentTouched: false,
+    submodule: 'Demand Planning',
+    submoduleIdx: 0,
+    carrier: 'Internal Plant Operations',
+    origin: 'Monterrey Assembly Line 4',
+    destination: 'Austin Final Integration Center',
+    mode: 'Plant Production',
+    riskReason: 'Manual operator sign-off required for batch run 31',
+    handlingAgent: 'Human team',
+    policy: 'POL-SCM-016',
+    firewallChecks: 'Manual approval required',
+    evidenceHash: '194012948bbca100',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'SHP-88240',
+    name: 'Rail — Chicago → Toronto',
+    laneNode: 'CN Rail',
+    quantity: '88 pallets',
+    eta: 'Oct 10',
+    status: 'Delivered',
+    agentTouched: false,
+    submodule: 'Supply Planning',
+    submoduleIdx: 1,
+    carrier: 'Canadian National Railway',
+    origin: 'Chicago Central Depot',
+    destination: 'Toronto Intermodal Terminal',
+    mode: 'Rail Freight',
+    riskReason: 'On-schedule transborder transit completed',
+    handlingAgent: 'Human team',
+    policy: 'POL-SCM-013',
+    firewallChecks: 'Completed',
+    evidenceHash: 'ff84019a28c41890',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  },
+  {
+    id: 'SHP-88252',
+    name: 'Truck — Lyon → Milan',
+    laneNode: 'DB Schenker',
+    quantity: '36 pallets',
+    eta: 'Oct 09',
+    status: 'In Progress',
+    agentTouched: false,
+    submodule: 'Logistics',
+    submoduleIdx: 2,
+    carrier: 'DB Schenker Logistics',
+    origin: 'Lyon Distribution Center',
+    destination: 'Milan Industrial Park',
+    mode: 'Road Transport',
+    riskReason: 'Alpine tunnel transit cleared on schedule',
+    handlingAgent: 'Human team',
+    policy: 'POL-SCM-017',
+    firewallChecks: 'Completed',
+    evidenceHash: 'c0918a2871bc9940',
+    linkedIncident: 'INC-2026-8842',
+    linkedDevice: 'END-FIN-094'
+  }
+];
+
+const DEFAULT_SUPPLY_CHAIN_AGENTS = [
+  {
+    id: 'AGT-SCM-01',
+    name: 'Demand Sensing Agent',
+    role: 'Blends POS, weather, market indicators, and promotion signals to detect demand spikes and stockouts before ERP runs.',
+    autonomyLevel: 'L3',
+    autonomyLabel: 'Act with approval',
+    status: 'Active',
+    owner: 'C. Weber (VP Supply Operations)',
+    actionsWeek: 2840,
+    approvalRate: 98.4,
+    recentAction: 'Auto-adjusted EMEA Q4 semiconductor demand buffer (+6.4%) based on automotive supply surge.',
+    sparkValues: [40, 48, 55, 62, 70, 75, 82, 91]
+  },
+  {
+    id: 'AGT-SCM-02',
+    name: 'Supply Planner',
+    role: 'Rebalances regional warehouse inventory, calculates safety stocks, and allocates constrained component capacity.',
+    autonomyLevel: 'L3',
+    autonomyLabel: 'Act with approval',
+    status: 'Active',
+    owner: 'J. Santos (Director SCM Planning)',
+    actionsWeek: 1940,
+    approvalRate: 97.2,
+    recentAction: 'Generated Hamburg DC rebalance order SP-2026-W41; prevented stockout on 18,400 tier-1 units.',
+    sparkValues: [30, 45, 42, 60, 68, 72, 85, 97]
+  },
+  {
+    id: 'AGT-SCM-03',
+    name: 'Logistics Rerouter',
+    role: 'Monitors global shipping AIS telemetry, port bottlenecks, and carrier disruptions to dynamically reroute lanes.',
+    autonomyLevel: 'L2',
+    autonomyLabel: 'Draft for approval',
+    status: 'Active',
+    owner: 'H. Lindqvist (Global Logistics Head)',
+    actionsWeek: 1120,
+    approvalRate: 94.8,
+    recentAction: 'Identified Red Sea / Suez transit delay for SHP-88214; prepared alternate Cape routing plan.',
+    sparkValues: [50, 42, 58, 65, 60, 78, 88, 93]
+  }
+];
+
 const INITIAL_STATE = {
   goldenThreadStep: 1, // 1 to 11 tracking the executive scenario progress
   organization: 'Apex Global Financial — Prod',
@@ -905,8 +1108,22 @@ export default function App() {
   // Persistent state with LocalStorage fallback
   const [appState, setAppState] = useState(() => {
     try {
-      const saved = localStorage.getItem('pr_aiia_enterprise_state_v2');
-      if (saved) return JSON.parse(saved);
+      const saved = localStorage.getItem('pr_aiia_enterprise_state_v3') || localStorage.getItem('pr_aiia_enterprise_state_v2');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...INITIAL_STATE,
+          ...parsed,
+          supplyChainPlans:
+            Array.isArray(parsed.supplyChainPlans) && parsed.supplyChainPlans.length > 0
+              ? parsed.supplyChainPlans
+              : DEFAULT_SUPPLY_CHAIN_PLANS,
+          supplyChainAgents:
+            Array.isArray(parsed.supplyChainAgents) && parsed.supplyChainAgents.length > 0
+              ? parsed.supplyChainAgents
+              : DEFAULT_SUPPLY_CHAIN_AGENTS
+        };
+      }
     } catch (e) {
       console.error(e);
     }
@@ -915,7 +1132,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('pr_aiia_enterprise_state_v2', JSON.stringify(appState));
+      localStorage.setItem('pr_aiia_enterprise_state_v3', JSON.stringify(appState));
     } catch (e) {
       console.error(e);
     }
@@ -1578,6 +1795,7 @@ export default function App() {
       confirmLabel: 'Reset Demo Data',
       tone: 'warning',
       onConfirm: () => {
+        localStorage.removeItem('pr_aiia_enterprise_state_v3');
         localStorage.removeItem('pr_aiia_enterprise_state_v2');
         setAppState(INITIAL_STATE);
         setSelectedIncidentId('INC-2026-8842');
@@ -5990,6 +6208,9 @@ function SupplyChainScreen({
   notify,
   requestConfirmation
 }) {
+  const activePlans = Array.isArray(plans) && plans.length > 0 ? plans : DEFAULT_SUPPLY_CHAIN_PLANS;
+  const activeAgents = Array.isArray(agents) && agents.length > 0 ? agents : DEFAULT_SUPPLY_CHAIN_AGENTS;
+
   const [activeSubTab, setActiveSubTab] = useState('All');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -6055,7 +6276,7 @@ function SupplyChainScreen({
   };
 
   // Filter and sort plans
-  const filteredPlans = plans
+  const filteredPlans = activePlans
     .filter((p) => {
       const matchesSub = activeSubTab === 'All' || p.submodule === activeSubTab;
       const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
@@ -6095,22 +6316,27 @@ function SupplyChainScreen({
   // Bulk actions
   const handleBulkApprove = () => {
     if (selectedIds.size === 0) return;
-    setAppState((prev) => ({
-      ...prev,
-      supplyChainPlans: prev.supplyChainPlans.map((p) =>
-        selectedIds.has(p.id) ? { ...p, status: 'Approved' } : p
-      ),
-      auditLog: [
-        {
-          id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
-          actor: 'CISO & VP Enterprise Operations',
-          action: `Bulk approved ${selectedIds.size} supply plans under Policy POL-SCM-014.`,
-          time: 'Just now',
-          status: 'Authorized'
-        },
-        ...prev.auditLog
-      ]
-    }));
+    setAppState((prev) => {
+      const currentList = Array.isArray(prev.supplyChainPlans) && prev.supplyChainPlans.length > 0
+        ? prev.supplyChainPlans
+        : activePlans;
+      return {
+        ...prev,
+        supplyChainPlans: currentList.map((p) =>
+          selectedIds.has(p.id) ? { ...p, status: 'Approved' } : p
+        ),
+        auditLog: [
+          {
+            id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'CISO & VP Enterprise Operations',
+            action: `Bulk approved ${selectedIds.size} supply plans under Policy POL-SCM-014.`,
+            time: 'Just now',
+            status: 'Authorized'
+          },
+          ...(prev.auditLog || [])
+        ]
+      };
+    });
     notify(`Approved ${selectedIds.size} supply plans — logged to Chain of Evidence.`, 'success');
     setSelectedIds(new Set());
   };
@@ -6153,20 +6379,25 @@ function SupplyChainScreen({
       linkedDevice: 'END-FIN-094'
     };
 
-    setAppState((prev) => ({
-      ...prev,
-      supplyChainPlans: [createdItem, ...(prev.supplyChainPlans || [])],
-      auditLog: [
-        {
-          id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
-          actor: 'VP Enterprise Operations',
-          action: `Created new supply plan ${newId} (${createdItem.name}) assigned to ${createdItem.handlingAgent}.`,
-          time: 'Just now',
-          status: 'Created'
-        },
-        ...prev.auditLog
-      ]
-    }));
+    setAppState((prev) => {
+      const currentList = Array.isArray(prev.supplyChainPlans) && prev.supplyChainPlans.length > 0
+        ? prev.supplyChainPlans
+        : activePlans;
+      return {
+        ...prev,
+        supplyChainPlans: [createdItem, ...currentList],
+        auditLog: [
+          {
+            id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'VP Enterprise Operations',
+            action: `Created new supply plan ${newId} (${createdItem.name}) assigned to ${createdItem.handlingAgent}.`,
+            time: 'Just now',
+            status: 'Created'
+          },
+          ...(prev.auditLog || [])
+        ]
+      };
+    });
 
     setShowNewModal(false);
     setNewPlan({
@@ -6184,7 +6415,10 @@ function SupplyChainScreen({
   // Toggle agent status
   const handleToggleAgentStatus = (agentName) => {
     setAppState((prev) => {
-      const nextAgents = (prev.supplyChainAgents || []).map((a) => {
+      const currentAgents = Array.isArray(prev.supplyChainAgents) && prev.supplyChainAgents.length > 0
+        ? prev.supplyChainAgents
+        : activeAgents;
+      const nextAgents = currentAgents.map((a) => {
         if (a.name === agentName) {
           const nextStatus = a.status === 'Active' ? 'Paused' : 'Active';
           return { ...a, status: nextStatus };
@@ -6202,12 +6436,12 @@ function SupplyChainScreen({
             time: 'Just now',
             status: 'Governance Change'
           },
-          ...prev.auditLog
+          ...(prev.auditLog || [])
         ]
       };
     });
 
-    const curr = agents.find((a) => a.name === agentName);
+    const curr = activeAgents.find((a) => a.name === agentName);
     const willBe = curr?.status === 'Active' ? 'Paused' : 'Active';
     notify(`${agentName} is now ${willBe}. Action Firewall rules updated.`, willBe === 'Active' ? 'success' : 'info');
     if (inspectingAgent) {
@@ -6217,9 +6451,12 @@ function SupplyChainScreen({
 
   // Quick reroute for at-risk shipment
   const handleAuthorizeReroute = (planId) => {
-    setAppState((prev) => ({
-      ...prev,
-      supplyChainPlans: prev.supplyChainPlans.map((p) =>
+    setAppState((prev) => {
+      const currentPlans = Array.isArray(prev.supplyChainPlans) && prev.supplyChainPlans.length > 0
+        ? prev.supplyChainPlans
+        : activePlans;
+      
+      const updatedPlans = currentPlans.map((p) =>
         p.id === planId
           ? {
               ...p,
@@ -6229,20 +6466,43 @@ function SupplyChainScreen({
               riskReason: 'Rerouted via Cape of Good Hope to avoid Suez chokepoint (+4d delay mitigated)'
             }
           : p
-      ),
-      auditLog: [
-        {
-          id: `AUD-REROUTE-${Math.floor(1000 + Math.random() * 9000)}`,
-          actor: 'Logistics Rerouter (AGT-SCM-03)',
-          action: `Authorized automated maritime lane reroute for ${planId} around Suez bottleneck.`,
-          time: 'Just now',
-          status: 'Auto-Rerouted'
-        },
-        ...prev.auditLog
-      ]
-    }));
+      );
+
+      return {
+        ...prev,
+        supplyChainPlans: updatedPlans,
+        auditLog: [
+          {
+            id: `AUD-REROUTE-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'Logistics Rerouter (AGT-SCM-03)',
+            action: `Authorized automated maritime lane reroute for ${planId} around Suez bottleneck.`,
+            time: 'Just now',
+            status: 'Auto-Rerouted'
+          },
+          ...(prev.auditLog || [])
+        ]
+      };
+    });
+
+    if (selectedDrawerPlan && selectedDrawerPlan.id === planId) {
+      setSelectedDrawerPlan((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: 'Approved',
+              laneNode: 'NYK Line · Cape of Good Hope Contingency',
+              eta: 'Oct 23',
+              riskReason: 'Rerouted via Cape of Good Hope to avoid Suez chokepoint (+4d delay mitigated)'
+            }
+          : null
+      );
+    }
+
     notify(`Maritime reroute authorized for ${planId}. Contingency lane synchronized with Rotterdam Port Authority.`, 'success');
   };
+
+  const atRiskPlan = activePlans.find((p) => p.id === 'SHP-88214') || activePlans[0];
+  const isRerouted = atRiskPlan?.status === 'Approved' || atRiskPlan?.laneNode?.includes('Cape');
 
   return (
     <div className="space-y-6">
@@ -6332,10 +6592,12 @@ function SupplyChainScreen({
             <span>Disrupted Lanes</span>
             <span className="font-mono text-slate-400">···</span>
           </div>
-          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">1 At Risk</div>
+          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">
+            {isRerouted ? '0 Active Disruption' : '1 At Risk'}
+          </div>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs">
             <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-              14 Auto-Rerouted
+              {isRerouted ? '15 Auto-Rerouted' : '14 Auto-Rerouted'}
             </span>
             <span className="text-[11px] text-slate-400">Zero human lag</span>
           </div>
@@ -6417,7 +6679,7 @@ function SupplyChainScreen({
             {/* Sub-module Navigation Tabs */}
             <div className="flex border-b border-slate-200 bg-slate-50/50 px-3 pt-2 overflow-x-auto gap-1">
               {submodules.map((tab) => {
-                const count = tab === 'All' ? plans.length : plans.filter((p) => p.submodule === tab).length;
+                const count = tab === 'All' ? activePlans.length : activePlans.filter((p) => p.submodule === tab).length;
                 const isActive = activeSubTab === tab;
                 return (
                   <button
@@ -6661,7 +6923,7 @@ function SupplyChainScreen({
             {/* Pagination Footer */}
             <div className="px-4 py-3 bg-slate-50/50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
               <span>
-                Showing 1–{filteredPlans.length} of {plans.length} supply plans
+                Showing 1–{filteredPlans.length} of {activePlans.length} supply plans
               </span>
               <div className="flex items-center gap-1">
                 <button
@@ -6687,36 +6949,77 @@ function SupplyChainScreen({
         {/* Right Column (4 cols): Embedded Agents & Disruption Sentinel */}
         <div className="lg:col-span-4 space-y-4">
           {/* Active Disruption Sentinel */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/80 rounded-xl p-4 shadow-xs space-y-3">
+          <div
+            className={`border rounded-xl p-4 shadow-xs space-y-3 transition ${
+              isRerouted
+                ? 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-300'
+                : 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200/80'
+            }`}
+          >
             <div className="flex items-start gap-2.5">
-              <div className="p-2 rounded-lg bg-amber-500 text-white shrink-0 mt-0.5">
-                <AlertTriangle className="w-4 h-4" />
+              <div
+                className={`p-2 rounded-lg text-white shrink-0 mt-0.5 ${
+                  isRerouted ? 'bg-emerald-600' : 'bg-amber-500'
+                }`}
+              >
+                {isRerouted ? <CheckCircle2 className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
               </div>
               <div>
-                <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
-                  Chokepoint Disruption Sentinel
+                <h4
+                  className={`text-xs font-bold uppercase tracking-wider ${
+                    isRerouted ? 'text-emerald-950' : 'text-amber-950'
+                  }`}
+                >
+                  {isRerouted ? 'Chokepoint Disruption Resolved' : 'Chokepoint Disruption Sentinel'}
                 </h4>
-                <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                  <span className="font-semibold text-amber-950">SHP-88214 (Ocean Shanghai → Rotterdam)</span> delayed +4 days due to Suez congestion.
+                <p className={`text-xs mt-1 leading-relaxed ${isRerouted ? 'text-emerald-800' : 'text-amber-800'}`}>
+                  {isRerouted ? (
+                    <span>
+                      <span className="font-semibold text-emerald-950">SHP-88214</span> successfully rerouted via Cape of Good Hope. Suez delay bypassed.
+                    </span>
+                  ) : (
+                    <span>
+                      <span className="font-semibold text-amber-950">SHP-88214 (Ocean Shanghai → Rotterdam)</span> delayed +4 days due to Suez congestion.
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
-            <div className="bg-white/80 p-2.5 rounded-lg border border-amber-200 text-xs text-slate-700 space-y-1">
+            <div
+              className={`p-2.5 rounded-lg border text-xs space-y-1 ${
+                isRerouted ? 'bg-white/90 border-emerald-200 text-slate-800' : 'bg-white/80 border-amber-200 text-slate-700'
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-[11px] text-slate-500">Handling Agent:</span>
                 <span className="font-semibold text-indigo-700">Logistics Rerouter (AGT-SCM-03)</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-slate-500">Contingency Plan:</span>
-                <span className="font-mono text-[11px] font-semibold text-slate-800">Cape of Good Hope Route</span>
+                <span className="text-[11px] text-slate-500">Routing Status:</span>
+                <span className={`font-mono text-[11px] font-semibold ${isRerouted ? 'text-emerald-700' : 'text-slate-800'}`}>
+                  {isRerouted ? 'Cape of Good Hope Route (Active)' : 'Cape Contingency Plan Prepared'}
+                </span>
               </div>
             </div>
             <button
               onClick={() => handleAuthorizeReroute('SHP-88214')}
-              className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition"
+              className={`w-full py-2 px-3 rounded-lg text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition ${
+                isRerouted
+                  ? 'bg-emerald-600 hover:bg-emerald-700'
+                  : 'bg-amber-600 hover:bg-amber-700'
+              }`}
             >
-              <Zap className="w-3.5 h-3.5" />
-              <span>Authorize Cape Contingency Reroute</span>
+              {isRerouted ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Reroute Authorized & Synchronized</span>
+                </>
+              ) : (
+                <>
+                  <Zap className="w-3.5 h-3.5" />
+                  <span>Authorize Cape Contingency Reroute</span>
+                </>
+              )}
             </button>
           </div>
 
@@ -6725,7 +7028,7 @@ function SupplyChainScreen({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Embedded SCM Agents</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">{agents.length} active digital workers</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{activeAgents.length} active digital workers</p>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
                 Autonomous SCM
@@ -6733,7 +7036,7 @@ function SupplyChainScreen({
             </div>
 
             <div className="space-y-2.5">
-              {agents.map((ag) => {
+              {activeAgents.map((ag) => {
                 const isPaused = ag.status === 'Paused';
                 return (
                   <div
@@ -6913,7 +7216,6 @@ function SupplyChainScreen({
                 <button
                   onClick={() => {
                     handleAuthorizeReroute(selectedDrawerPlan.id);
-                    setSelectedDrawerPlan(null);
                   }}
                   className="px-3 py-2 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-xs font-medium"
                 >
@@ -7115,7 +7417,7 @@ function SupplyChainScreen({
                     onChange={(e) => setNewPlan({ ...newPlan, assignedAgent: e.target.value })}
                     className="w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-xs focus:outline-none focus:border-blue-500"
                   >
-                    {agents.map((a) => (
+                    {activeAgents.map((a) => (
                       <option key={a.id} value={a.name}>
                         {a.name} ({a.autonomyLevel})
                       </option>
@@ -7148,10 +7450,6 @@ function SupplyChainScreen({
   );
 }
 
-// ============================================================================
-// SUPPLY CHAIN FULL RECORD DETAIL SCREEN
-// ============================================================================
-
 function SupplyChainDetailScreen({
   plan,
   plans,
@@ -7177,42 +7475,52 @@ function SupplyChainDetailScreen({
   const relatedPlans = plans.filter((p) => p.id !== plan.id).slice(0, 3);
 
   const handleApprove = () => {
-    setAppState((prev) => ({
-      ...prev,
-      supplyChainPlans: prev.supplyChainPlans.map((p) =>
-        p.id === plan.id ? { ...p, status: 'Approved' } : p
-      ),
-      auditLog: [
-        {
-          id: `AUD-APP-${Math.floor(1000 + Math.random() * 9000)}`,
-          actor: 'CISO & VP Enterprise Operations',
-          action: `Approved SCM Plan ${plan.id} (${plan.name}) via Action Firewall.`,
-          time: 'Just now',
-          status: 'Authorized'
-        },
-        ...prev.auditLog
-      ]
-    }));
+    setAppState((prev) => {
+      const base = Array.isArray(prev.supplyChainPlans) && prev.supplyChainPlans.length > 0
+        ? prev.supplyChainPlans
+        : (plans || DEFAULT_SUPPLY_CHAIN_PLANS);
+      return {
+        ...prev,
+        supplyChainPlans: base.map((p) =>
+          p.id === plan.id ? { ...p, status: 'Approved' } : p
+        ),
+        auditLog: [
+          {
+            id: `AUD-APP-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'CISO & VP Enterprise Operations',
+            action: `Approved SCM Plan ${plan.id} (${plan.name}) via Action Firewall.`,
+            time: 'Just now',
+            status: 'Authorized'
+          },
+          ...(prev.auditLog || [])
+        ]
+      };
+    });
     notify(`Approved ${plan.id} — logged to Chain of Evidence and Digital Twin.`, 'success');
   };
 
   const handleEscalate = () => {
-    setAppState((prev) => ({
-      ...prev,
-      supplyChainPlans: prev.supplyChainPlans.map((p) =>
-        p.id === plan.id ? { ...p, status: 'At Risk' } : p
-      ),
-      auditLog: [
-        {
-          id: `AUD-ESC-${Math.floor(1000 + Math.random() * 9000)}`,
-          actor: 'Operations Control Tower',
-          action: `Escalated ${plan.id} to SCM Director queue for human intervention.`,
-          time: 'Just now',
-          status: 'Escalated'
-        },
-        ...prev.auditLog
-      ]
-    }));
+    setAppState((prev) => {
+      const base = Array.isArray(prev.supplyChainPlans) && prev.supplyChainPlans.length > 0
+        ? prev.supplyChainPlans
+        : (plans || DEFAULT_SUPPLY_CHAIN_PLANS);
+      return {
+        ...prev,
+        supplyChainPlans: base.map((p) =>
+          p.id === plan.id ? { ...p, status: 'At Risk' } : p
+        ),
+        auditLog: [
+          {
+            id: `AUD-ESC-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'Operations Control Tower',
+            action: `Escalated ${plan.id} to SCM Director queue for human intervention.`,
+            time: 'Just now',
+            status: 'Escalated'
+          },
+          ...(prev.auditLog || [])
+        ]
+      };
+    });
     notify(`Escalated ${plan.id} to VP Supply Chain & Director of Logistics.`, 'info');
   };
 
