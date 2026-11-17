@@ -43,19 +43,6 @@ The production-ready static site is generated in `dist/`.
 
 3. Replace the remote URL with your GitHub repository URL.
 
-## Deploy to Vercel
-
-1. Sign in to [Vercel](https://vercel.com/) and choose **Add New → Project**.
-2. Import the GitHub repository you created above.
-3. Vercel should detect **Vite** automatically. Confirm these settings if needed:
-   - Framework Preset: `Vite`
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm install`
-4. Select **Deploy**. After the build completes, Vercel provides a live URL you can share.
-5. Future pushes to the connected branch trigger a new deployment automatically.
-
-The included `vercel.json` sets the Vite framework, build command, and `dist` output directory. No environment variables are required by the current prototype.
 
 ## Project structure
 
