@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
+  Truck, Ship, Plane, Package, Boxes,
   Shield, Server, AlertTriangle, CheckCircle2, Clock, Search, Bell, HelpCircle,
   User, ChevronRight, ChevronDown, Terminal, Cpu, FileText, Lock, Activity,
   BarChart3, Settings, Layers, Zap, Eye, Check, X, Plus, Filter, ArrowLeft,
@@ -690,6 +691,204 @@ const INITIAL_STATE = {
       signatureHash: 'sha256:7d91a04f...c83b12'
     }
   ],
+
+  supplyChainPlans: [
+    {
+      id: 'SHP-88214',
+      name: 'Ocean — Shanghai → Rotterdam',
+      laneNode: 'NYK Line · 14 TEU',
+      quantity: '412 units',
+      eta: 'Oct 19',
+      status: 'At Risk',
+      agentTouched: true,
+      submodule: 'Demand Planning',
+      submoduleIdx: 0,
+      carrier: 'NYK Line',
+      origin: 'Shanghai Port (CNSHA)',
+      destination: 'Rotterdam Port (NLRTM)',
+      mode: 'Ocean Freight',
+      riskReason: 'Port congestion delay at Suez chokepoint (+4 days buffer exceeded)',
+      handlingAgent: 'Logistics Rerouter',
+      policy: 'POL-SCM-014',
+      firewallChecks: '8/8 checks passed',
+      evidenceHash: 'b49f28c1192e4088',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'SP-2026-W41',
+      name: 'Weekly supply plan — EMEA',
+      laneNode: 'Hamburg DC',
+      quantity: '18,400 units',
+      eta: 'Oct 12',
+      status: 'Approved',
+      agentTouched: true,
+      submodule: 'Supply Planning',
+      submoduleIdx: 1,
+      carrier: 'Kuehne+Nagel',
+      origin: 'Munich Manufacturing Plant',
+      destination: 'Hamburg Regional DC',
+      mode: 'Intermodal Logistics',
+      riskReason: 'Capacity constrained; reallocated from Leipzig warehouse buffer',
+      handlingAgent: 'Supply Planner',
+      policy: 'POL-SCM-011',
+      firewallChecks: '8/8 checks passed',
+      evidenceHash: 'c71289df4091a104',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'SHP-88231',
+      name: 'Air — Penang → Dallas',
+      laneNode: 'DHL Global',
+      quantity: '220 units',
+      eta: 'Oct 08',
+      status: 'In Progress',
+      agentTouched: true,
+      submodule: 'Logistics',
+      submoduleIdx: 2,
+      carrier: 'DHL Global Forwarding',
+      origin: 'Penang Chip Fab (MYPEN)',
+      destination: 'Dallas Fort Worth Hub (USDFW)',
+      mode: 'Air Cargo Express',
+      riskReason: 'Expedited consignment for priority server hardware replacement',
+      handlingAgent: 'Demand Sensing Agent',
+      policy: 'POL-SCM-012',
+      firewallChecks: '8/8 checks passed',
+      evidenceHash: '984102bc4501fd88',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'SP-2026-W42',
+      name: 'Weekly supply plan — APAC',
+      laneNode: 'Singapore DC',
+      quantity: '22,900 units',
+      eta: 'Oct 19',
+      status: 'Draft',
+      agentTouched: true,
+      submodule: 'Inventory',
+      submoduleIdx: 3,
+      carrier: 'Maersk Logistics',
+      origin: 'Shenzhen Hub',
+      destination: 'Singapore Regional DC',
+      mode: 'Ocean / Hub Transfer',
+      riskReason: 'Quarterly inventory rebalance draft under review',
+      handlingAgent: 'Supply Planner',
+      policy: 'POL-SCM-015',
+      firewallChecks: '8/8 checks passed',
+      evidenceHash: 'ea4019280bf61290',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'PRD-31008',
+      name: 'Production order — Line 4',
+      laneNode: 'Monterrey Plant',
+      quantity: '6,500 units',
+      eta: 'Oct 14',
+      status: 'Scheduled',
+      agentTouched: false,
+      submodule: 'Demand Planning',
+      submoduleIdx: 0,
+      carrier: 'Internal Plant Operations',
+      origin: 'Monterrey Assembly Line 4',
+      destination: 'Austin Final Integration Center',
+      mode: 'Plant Production',
+      riskReason: 'Manual operator sign-off required for batch run 31',
+      handlingAgent: 'Human team',
+      policy: 'POL-SCM-016',
+      firewallChecks: 'Manual approval required',
+      evidenceHash: '194012948bbca100',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'SHP-88240',
+      name: 'Rail — Chicago → Toronto',
+      laneNode: 'CN Rail',
+      quantity: '88 pallets',
+      eta: 'Oct 10',
+      status: 'Delivered',
+      agentTouched: false,
+      submodule: 'Supply Planning',
+      submoduleIdx: 1,
+      carrier: 'Canadian National Railway',
+      origin: 'Chicago Central Depot',
+      destination: 'Toronto Intermodal Terminal',
+      mode: 'Rail Freight',
+      riskReason: 'On-schedule transborder transit completed',
+      handlingAgent: 'Human team',
+      policy: 'POL-SCM-013',
+      firewallChecks: 'Completed',
+      evidenceHash: 'ff84019a28c41890',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    },
+    {
+      id: 'SHP-88252',
+      name: 'Truck — Lyon → Milan',
+      laneNode: 'DB Schenker',
+      quantity: '36 pallets',
+      eta: 'Oct 09',
+      status: 'In Progress',
+      agentTouched: false,
+      submodule: 'Logistics',
+      submoduleIdx: 2,
+      carrier: 'DB Schenker Logistics',
+      origin: 'Lyon Distribution Center',
+      destination: 'Milan Industrial Park',
+      mode: 'Road Transport',
+      riskReason: 'Alpine tunnel transit cleared on schedule',
+      handlingAgent: 'Human team',
+      policy: 'POL-SCM-017',
+      firewallChecks: 'Completed',
+      evidenceHash: 'c0918a2871bc9940',
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    }
+  ],
+  supplyChainAgents: [
+    {
+      id: 'AGT-SCM-01',
+      name: 'Demand Sensing Agent',
+      role: 'Blends POS, weather, market indicators, and promotion signals to detect demand spikes and stockouts before ERP runs.',
+      autonomyLevel: 'L3',
+      autonomyLabel: 'Act with approval',
+      status: 'Active',
+      owner: 'C. Weber (VP Supply Operations)',
+      actionsWeek: 2840,
+      approvalRate: 98.4,
+      recentAction: 'Auto-adjusted EMEA Q4 semiconductor demand buffer (+6.4%) based on automotive supply surge.',
+      sparkValues: [40, 48, 55, 62, 70, 75, 82, 91]
+    },
+    {
+      id: 'AGT-SCM-02',
+      name: 'Supply Planner',
+      role: 'Rebalances regional warehouse inventory, calculates safety stocks, and allocates constrained component capacity.',
+      autonomyLevel: 'L3',
+      autonomyLabel: 'Act with approval',
+      status: 'Active',
+      owner: 'J. Santos (Director SCM Planning)',
+      actionsWeek: 1940,
+      approvalRate: 97.2,
+      recentAction: 'Generated Hamburg DC rebalance order SP-2026-W41; prevented stockout on 18,400 tier-1 units.',
+      sparkValues: [30, 45, 42, 60, 68, 72, 85, 97]
+    },
+    {
+      id: 'AGT-SCM-03',
+      name: 'Logistics Rerouter',
+      role: 'Monitors global shipping AIS telemetry, port bottlenecks, and carrier disruptions to dynamically reroute lanes.',
+      autonomyLevel: 'L2',
+      autonomyLabel: 'Draft for approval',
+      status: 'Active',
+      owner: 'H. Lindqvist (Global Logistics Head)',
+      actionsWeek: 1120,
+      approvalRate: 94.8,
+      recentAction: 'Identified Red Sea / Suez transit delay for SHP-88214; prepared alternate Cape routing plan.',
+      sparkValues: [50, 42, 58, 65, 60, 78, 88, 93]
+    }
+  ],
   auditLog: [
     { id: 'AUD-904', time: '08:16:06 UTC', actor: 'AGT-08 (Agent Supervisor)', action: 'Intercepted kernel hotfix on END-FIN-094; created FW-REQ-9921 for human approval.', status: 'Guardrail Enforced' },
     { id: 'AUD-903', time: '08:15:42 UTC', actor: 'AGT-07 (Compliance Analyst)', action: 'Updated NIST 800-53 SI-2 status to Gap Identified and opened POAM-2026-112.', status: 'Logged' },
@@ -731,6 +930,7 @@ export default function App() {
   const [selectedControlId, setSelectedControlId] = useState('SI-2');
   const [selectedAgentId, setSelectedAgentId] = useState('AGT-03');
   const [selectedFirewallId, setSelectedFirewallId] = useState('FW-REQ-9921');
+  const [selectedSupplyChainId, setSelectedSupplyChainId] = useState('SHP-88214');
 
   // Sidebar Expand/Collapse State
   const [expandedSections, setExpandedSections] = useState({
@@ -843,6 +1043,7 @@ export default function App() {
     if (screen === 'grc-evidence' && recordId) setSelectedControlId(recordId);
     if (screen === 'ai-workforce' && recordId) setSelectedAgentId(recordId);
     if (screen === 'ai-firewall' && recordId) setSelectedFirewallId(recordId);
+    if ((screen === 'supply-chain' || screen === 'supply-chain-detail') && recordId) setSelectedSupplyChainId(recordId);
     setActiveScreen(screen);
     setShowSearchDropdown(false);
   };
@@ -1678,6 +1879,7 @@ export default function App() {
       { id: 'exposure', label: 'Exposure Mgmt & SecOps', icon: ShieldAlert, badge: metrics.criticalVulns > 0 ? metrics.criticalVulns : null, badgeColor: 'bg-red-500/20 text-red-300' },
       { id: 'remediation', label: 'Remediation & Approvals', icon: Zap },
       { id: 'assets', label: 'Asset & Spend Management', icon: HardDrive },
+      { id: 'supply-chain', label: 'Supply Chain (SCM)', icon: Truck, badge: 'Live SCM', badgeColor: 'bg-indigo-500/20 text-indigo-300' },
       { id: 'zero-trust', label: 'Secure Access (Zero Trust)', icon: Key },
       { id: 'esm', label: 'Enterprise & Customer Service', icon: Briefcase },
       { id: 'portfolio', label: 'Portfolio Management', icon: Layers },
@@ -1763,7 +1965,8 @@ export default function App() {
                   const isActive =
                     activeScreen === item.id ||
                     (item.id === 'itsm' && activeScreen === 'incident-detail') ||
-                    (item.id === 'endpoints' && activeScreen === 'endpoint-detail');
+                    (item.id === 'endpoints' && activeScreen === 'endpoint-detail') ||
+                    (item.id === 'supply-chain' && activeScreen === 'supply-chain-detail');
                   return (
                     <button
                       key={item.id}
@@ -2365,6 +2568,32 @@ export default function App() {
               setAppState={setAppState}
               notify={notify}
               navigateToRecord={navigateToRecord}
+            />
+          )}
+
+          
+          {activeScreen === 'supply-chain' && (
+            <SupplyChainScreen
+              plans={appState.supplyChainPlans || []}
+              agents={appState.supplyChainAgents || []}
+              onOpenPlan={(id) => navigateToRecord('supply-chain-detail', id)}
+              navigateToRecord={navigateToRecord}
+              setAppState={setAppState}
+              notify={notify}
+              requestConfirmation={requestConfirmation}
+            />
+          )}
+
+          {activeScreen === 'supply-chain-detail' && (
+            <SupplyChainDetailScreen
+              plan={(appState.supplyChainPlans || []).find((p) => p.id === selectedSupplyChainId) || (appState.supplyChainPlans || [])[0]}
+              plans={appState.supplyChainPlans || []}
+              agents={appState.supplyChainAgents || []}
+              onBack={() => setActiveScreen('supply-chain')}
+              navigateToRecord={navigateToRecord}
+              setAppState={setAppState}
+              notify={notify}
+              requestConfirmation={requestConfirmation}
             />
           )}
 
@@ -5749,6 +5978,1569 @@ function AIFirewallScreen({
     </div>
   );
 }
+
+// SupplyChainScreen and SupplyChainDetailScreen components
+
+function SupplyChainScreen({
+  plans,
+  agents,
+  onOpenPlan,
+  navigateToRecord,
+  setAppState,
+  notify,
+  requestConfirmation
+}) {
+  const [activeSubTab, setActiveSubTab] = useState('All');
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [sortField, setSortField] = useState('id');
+  const [sortAsc, setSortAsc] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [selectedDrawerPlan, setSelectedDrawerPlan] = useState(null);
+  const [inspectingAgent, setInspectingAgent] = useState(null);
+  const [showNewModal, setShowNewModal] = useState(false);
+  const [formError, setFormError] = useState('');
+
+  // Replay simulation state
+  const [isReplaying, setIsReplaying] = useState(false);
+  const [simulationStep, setSimulationStep] = useState(-1);
+
+  // New plan form state
+  const [newPlan, setNewPlan] = useState({
+    name: '',
+    laneNode: '',
+    quantity: '',
+    eta: 'Nov 05',
+    submodule: 'Demand Planning',
+    carrier: 'DHL Global',
+    assignedAgent: 'Demand Sensing Agent'
+  });
+
+  const submodules = ['All', 'Demand Planning', 'Supply Planning', 'Logistics', 'Inventory'];
+  const workflowSteps = [
+    { num: '01', title: 'Demand signal', desc: 'POS anomalies & channel spikes detected across 42 retail partners' },
+    { num: '02', title: 'Forecast update', desc: 'Neural Forecaster recalculates safety stock buffers (+2.4 pts gain)' },
+    { num: '03', title: 'Supply plan', desc: 'Multi-echelon rebalancing formulated across Hamburg & Singapore DCs' },
+    { num: '04', title: 'Purchase orders', desc: 'AI Action Firewall pre-authorizes tier-1 supplier component releases' },
+    { num: '05', title: 'Production orders', desc: 'Monterrey plant batch schedules and carrier bookings synchronized' }
+  ];
+
+  const handleReplaySimulation = () => {
+    if (isReplaying) return;
+    setIsReplaying(true);
+    setSimulationStep(0);
+
+    const stepInterval = (step) => {
+      if (step < 5) {
+        setSimulationStep(step);
+        setTimeout(() => stepInterval(step + 1), 600);
+      } else {
+        setTimeout(() => {
+          setIsReplaying(false);
+          setSimulationStep(-1);
+          notify('Signature workflow simulation completed. All 5 pipeline stages verified.', 'success');
+        }, 800);
+      }
+    };
+    stepInterval(0);
+  };
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortAsc(!sortAsc);
+    } else {
+      setSortField(field);
+      setSortAsc(true);
+    }
+  };
+
+  // Filter and sort plans
+  const filteredPlans = plans
+    .filter((p) => {
+      const matchesSub = activeSubTab === 'All' || p.submodule === activeSubTab;
+      const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
+      const q = search.toLowerCase();
+      const matchesSearch =
+        !q ||
+        p.id.toLowerCase().includes(q) ||
+        p.name.toLowerCase().includes(q) ||
+        p.laneNode.toLowerCase().includes(q) ||
+        p.carrier.toLowerCase().includes(q) ||
+        (p.handlingAgent && p.handlingAgent.toLowerCase().includes(q));
+      return matchesSub && matchesStatus && matchesSearch;
+    })
+    .sort((a, b) => {
+      const valA = String(a[sortField] || '');
+      const valB = String(b[sortField] || '');
+      return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    });
+
+  // Select all handler
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedIds(new Set(filteredPlans.map((p) => p.id)));
+    } else {
+      setSelectedIds(new Set());
+    }
+  };
+
+  const handleToggleRow = (id, e) => {
+    e.stopPropagation();
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedIds(next);
+  };
+
+  // Bulk actions
+  const handleBulkApprove = () => {
+    if (selectedIds.size === 0) return;
+    setAppState((prev) => ({
+      ...prev,
+      supplyChainPlans: prev.supplyChainPlans.map((p) =>
+        selectedIds.has(p.id) ? { ...p, status: 'Approved' } : p
+      ),
+      auditLog: [
+        {
+          id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
+          actor: 'CISO & VP Enterprise Operations',
+          action: `Bulk approved ${selectedIds.size} supply plans under Policy POL-SCM-014.`,
+          time: 'Just now',
+          status: 'Authorized'
+        },
+        ...prev.auditLog
+      ]
+    }));
+    notify(`Approved ${selectedIds.size} supply plans — logged to Chain of Evidence.`, 'success');
+    setSelectedIds(new Set());
+  };
+
+  const handleBulkExport = () => {
+    const count = selectedIds.size > 0 ? selectedIds.size : filteredPlans.length;
+    notify(`Export generated: ${count} supply plans downloaded as SCM_Report_${new Date().toISOString().slice(0, 10)}.csv`, 'success');
+  };
+
+  // Create new plan
+  const handleCreatePlan = (e) => {
+    e.preventDefault();
+    if (!newPlan.name.trim() || !newPlan.laneNode.trim()) {
+      setFormError('Please enter a descriptive plan name and fulfillment lane/node.');
+      return;
+    }
+    setFormError('');
+
+    const newId = `SP-2026-W${Math.floor(43 + Math.random() * 10)}`;
+    const createdItem = {
+      id: newId,
+      name: newPlan.name.trim(),
+      laneNode: newPlan.laneNode.trim(),
+      quantity: newPlan.quantity.trim() || '5,000 units',
+      eta: newPlan.eta.trim() || 'Nov 15',
+      status: 'Draft',
+      agentTouched: newPlan.assignedAgent !== 'Human team',
+      submodule: newPlan.submodule,
+      submoduleIdx: submodules.indexOf(newPlan.submodule) > 0 ? submodules.indexOf(newPlan.submodule) - 1 : 0,
+      carrier: newPlan.carrier || 'Kuehne+Nagel',
+      origin: 'Regional Assembly Hub',
+      destination: newPlan.laneNode.trim(),
+      mode: newPlan.laneNode.includes('Air') ? 'Air Cargo' : newPlan.laneNode.includes('Ocean') ? 'Ocean Freight' : 'Intermodal Transport',
+      riskReason: 'Newly created supply plan; awaiting AI demand curve reconciliation',
+      handlingAgent: newPlan.assignedAgent,
+      policy: 'POL-SCM-019',
+      firewallChecks: '8/8 checks passed',
+      evidenceHash: `evd-${Math.random().toString(36).substring(2, 10)}`,
+      linkedIncident: 'INC-2026-8842',
+      linkedDevice: 'END-FIN-094'
+    };
+
+    setAppState((prev) => ({
+      ...prev,
+      supplyChainPlans: [createdItem, ...(prev.supplyChainPlans || [])],
+      auditLog: [
+        {
+          id: `AUD-SCM-${Math.floor(1000 + Math.random() * 9000)}`,
+          actor: 'VP Enterprise Operations',
+          action: `Created new supply plan ${newId} (${createdItem.name}) assigned to ${createdItem.handlingAgent}.`,
+          time: 'Just now',
+          status: 'Created'
+        },
+        ...prev.auditLog
+      ]
+    }));
+
+    setShowNewModal(false);
+    setNewPlan({
+      name: '',
+      laneNode: '',
+      quantity: '',
+      eta: 'Nov 05',
+      submodule: 'Demand Planning',
+      carrier: 'DHL Global',
+      assignedAgent: 'Demand Sensing Agent'
+    });
+    notify(`Created supply plan ${newId} — tracking initiated in SCM.`, 'success');
+  };
+
+  // Toggle agent status
+  const handleToggleAgentStatus = (agentName) => {
+    setAppState((prev) => {
+      const nextAgents = (prev.supplyChainAgents || []).map((a) => {
+        if (a.name === agentName) {
+          const nextStatus = a.status === 'Active' ? 'Paused' : 'Active';
+          return { ...a, status: nextStatus };
+        }
+        return a;
+      });
+      return {
+        ...prev,
+        supplyChainAgents: nextAgents,
+        auditLog: [
+          {
+            id: `AUD-AGT-${Math.floor(1000 + Math.random() * 9000)}`,
+            actor: 'Security Operations & AI Governor',
+            action: `Toggled state of ${agentName} to ${nextAgents.find((x) => x.name === agentName)?.status}.`,
+            time: 'Just now',
+            status: 'Governance Change'
+          },
+          ...prev.auditLog
+        ]
+      };
+    });
+
+    const curr = agents.find((a) => a.name === agentName);
+    const willBe = curr?.status === 'Active' ? 'Paused' : 'Active';
+    notify(`${agentName} is now ${willBe}. Action Firewall rules updated.`, willBe === 'Active' ? 'success' : 'info');
+    if (inspectingAgent) {
+      setInspectingAgent((prev) => prev ? { ...prev, status: willBe } : null);
+    }
+  };
+
+  // Quick reroute for at-risk shipment
+  const handleAuthorizeReroute = (planId) => {
+    setAppState((prev) => ({
+      ...prev,
+      supplyChainPlans: prev.supplyChainPlans.map((p) =>
+        p.id === planId
+          ? {
+              ...p,
+              status: 'Approved',
+              laneNode: 'NYK Line · Cape of Good Hope Contingency',
+              eta: 'Oct 23',
+              riskReason: 'Rerouted via Cape of Good Hope to avoid Suez chokepoint (+4d delay mitigated)'
+            }
+          : p
+      ),
+      auditLog: [
+        {
+          id: `AUD-REROUTE-${Math.floor(1000 + Math.random() * 9000)}`,
+          actor: 'Logistics Rerouter (AGT-SCM-03)',
+          action: `Authorized automated maritime lane reroute for ${planId} around Suez bottleneck.`,
+          time: 'Just now',
+          status: 'Auto-Rerouted'
+        },
+        ...prev.auditLog
+      ]
+    }));
+    notify(`Maritime reroute authorized for ${planId}. Contingency lane synchronized with Rotterdam Port Authority.`, 'success');
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* 1. Header & Actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+              Pr AiiA Platform • Business Applications (SCM)
+            </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold bg-indigo-500/10 text-indigo-700 border border-indigo-200">
+              SCM Engine v2.2
+            </span>
+          </div>
+          <h1 className="text-xl font-bold text-slate-900 mt-0.5">Supply Chain & Autonomous Logistics</h1>
+          <p className="text-xs text-slate-600 mt-1 max-w-3xl">
+            Demand sensing and supply planning that re-plans itself when the enterprise digital twin detects a disruption.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            onClick={handleBulkExport}
+            className="px-3.5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center gap-1.5 shadow-xs transition"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <span>Export</span>
+          </button>
+          <button
+            onClick={() => {
+              setFormError('');
+              setShowNewModal(true);
+            }}
+            className="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition"
+          >
+            <Plus className="w-4 h-4" />
+            <span>New supply plan</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Top KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs border-l-4 border-l-indigo-600">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Forecast Accuracy</span>
+            <span className="font-mono text-slate-400">···</span>
+          </div>
+          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">91.3%</div>
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+              ↑ +2.4 pts
+            </span>
+            <span className="text-[11px] text-slate-400">Blended POS & weather model</span>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs border-l-4 border-l-blue-600">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Fill Rate</span>
+            <span className="font-mono text-slate-400">···</span>
+          </div>
+          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">97.1%</div>
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+              ↑ +0.6 pts
+            </span>
+            <span className="text-[11px] text-slate-400">EMEA & APAC DCs</span>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs border-l-4 border-l-emerald-600">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Perfect Order Rate</span>
+            <span className="font-mono text-slate-400">···</span>
+          </div>
+          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">93.8%</div>
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+              ↑ +1.2 pts
+            </span>
+            <span className="text-[11px] text-slate-400">OTIF target: &gt;92.5%</span>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs border-l-4 border-l-amber-500">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Disrupted Lanes</span>
+            <span className="font-mono text-slate-400">···</span>
+          </div>
+          <div className="text-3xl font-bold text-slate-900 mt-2 font-mono tracking-tight">1 At Risk</div>
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+              14 Auto-Rerouted
+            </span>
+            <span className="text-[11px] text-slate-400">Zero human lag</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Signature Workflow Box with Replay Simulation */}
+      <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <h3 className="text-sm font-bold text-slate-900">Signature workflow • Autonomous Disruption Mitigation</h3>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Live path of a typical supply plan through SCM, digital twin dependency mapping, and Action Firewall
+            </p>
+          </div>
+          <button
+            onClick={handleReplaySimulation}
+            disabled={isReplaying}
+            className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition ${
+              isReplaying
+                ? 'bg-blue-50 text-blue-700 border-blue-200 cursor-wait'
+                : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300'
+            }`}
+          >
+            <Play className={`w-3.5 h-3.5 text-blue-600 ${isReplaying ? 'animate-spin' : ''}`} />
+            <span>{isReplaying ? 'Simulating Workflow...' : 'Replay'}</span>
+          </button>
+        </div>
+
+        {/* 5-Step Chevron Flow */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-1">
+          {workflowSteps.map((s, idx) => {
+            const isCur = simulationStep === idx;
+            const isPassed = simulationStep > idx || simulationStep === -1;
+            return (
+              <div
+                key={s.num}
+                className={`p-3 rounded-lg border text-xs transition duration-300 relative overflow-hidden ${
+                  isCur
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-400/50 scale-[1.02]'
+                    : isPassed
+                    ? 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300'
+                    : 'bg-white text-slate-400 border-slate-200 opacity-60'
+                }`}
+              >
+                <div className={`font-mono text-[10px] font-bold ${isCur ? 'text-blue-100' : 'text-slate-400'}`}>
+                  {s.num}
+                </div>
+                <div className={`font-semibold text-xs mt-0.5 ${isCur ? 'text-white' : 'text-slate-800'}`}>
+                  {s.title}
+                </div>
+                <div className={`text-[10px] mt-1 line-clamp-2 leading-tight ${isCur ? 'text-blue-100' : 'text-slate-500'}`}>
+                  {s.desc}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {isReplaying && simulationStep >= 0 && (
+          <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-900 flex items-center gap-2 animate-fade-in">
+            <Activity className="w-4 h-4 text-blue-600 shrink-0 animate-pulse" />
+            <div className="font-medium">
+              <span className="font-bold">Active Engine State: </span>
+              {workflowSteps[simulationStep]?.desc}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 4. Split 2-Column Main Workspace */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column (8 cols): Table with Tabs and Controls */}
+        <div className="lg:col-span-8 space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            {/* Sub-module Navigation Tabs */}
+            <div className="flex border-b border-slate-200 bg-slate-50/50 px-3 pt-2 overflow-x-auto gap-1">
+              {submodules.map((tab) => {
+                const count = tab === 'All' ? plans.length : plans.filter((p) => p.submodule === tab).length;
+                const isActive = activeSubTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveSubTab(tab)}
+                    className={`px-3 py-2 text-xs font-semibold border-b-2 transition flex items-center gap-1.5 whitespace-nowrap ${
+                      isActive
+                        ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
+                        : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                    }`}
+                  >
+                    <span>{tab}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                        isActive ? 'bg-blue-100 text-blue-800 font-bold' : 'bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Toolbar: Search & Status Filter */}
+            <div className="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-white">
+              <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 w-full sm:w-80 focus-within:border-blue-500 focus-within:bg-white transition">
+                <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Filter supply plans by ID, lane, carrier..."
+                  className="bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none w-full"
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} className="text-slate-400 hover:text-slate-600 text-xs">
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-slate-500 font-medium">Status:</span>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-xs font-medium text-slate-700 focus:outline-none focus:border-blue-500"
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="At Risk">At Risk</option>
+                  <option value="Approved">Approved</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Draft">Draft</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Bulk Action Bar (when records are selected) */}
+            {selectedIds.size > 0 && (
+              <div className="bg-slate-900 text-white px-4 py-2.5 flex items-center justify-between gap-3 text-xs animate-fade-in">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                  <span className="font-semibold">{selectedIds.size} supply plan{selectedIds.size > 1 ? 's' : ''} selected</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleBulkApprove}
+                    className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-medium transition"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={handleBulkExport}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium border border-slate-700 transition"
+                  >
+                    Export
+                  </button>
+                  <button
+                    onClick={() => setSelectedIds(new Set())}
+                    className="px-2 py-1 text-slate-400 hover:text-white transition"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Plans Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold uppercase text-slate-500 tracking-wider">
+                    <th className="py-3 px-3 w-10 text-center">
+                      <input
+                        type="checkbox"
+                        checked={filteredPlans.length > 0 && selectedIds.size === filteredPlans.length}
+                        onChange={handleSelectAll}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                        aria-label="Select all"
+                      />
+                    </th>
+                    <th
+                      onClick={() => handleSort('name')}
+                      className="py-3 px-4 cursor-pointer hover:text-slate-800"
+                    >
+                      Record {sortField === 'name' && (sortAsc ? '↑' : '↓')}
+                    </th>
+                    <th
+                      onClick={() => handleSort('laneNode')}
+                      className="py-3 px-4 cursor-pointer hover:text-slate-800"
+                    >
+                      Lane / Node {sortField === 'laneNode' && (sortAsc ? '↑' : '↓')}
+                    </th>
+                    <th
+                      onClick={() => handleSort('quantity')}
+                      className="py-3 px-3 cursor-pointer hover:text-slate-800"
+                    >
+                      Quantity {sortField === 'quantity' && (sortAsc ? '↑' : '↓')}
+                    </th>
+                    <th
+                      onClick={() => handleSort('eta')}
+                      className="py-3 px-3 cursor-pointer hover:text-slate-800"
+                    >
+                      ETA {sortField === 'eta' && (sortAsc ? '↑' : '↓')}
+                    </th>
+                    <th
+                      onClick={() => handleSort('status')}
+                      className="py-3 px-3 cursor-pointer hover:text-slate-800"
+                    >
+                      Status {sortField === 'status' && (sortAsc ? '↑' : '↓')}
+                    </th>
+                    <th className="py-3 px-3">Evidence</th>
+                    <th className="py-3 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredPlans.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="py-12 text-center text-slate-400">
+                        <Truck className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                        <p className="text-sm font-medium text-slate-600">No supply chain records match filter criteria</p>
+                        <p className="text-xs text-slate-400 mt-1">Try resetting search or status filters.</p>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredPlans.map((p) => {
+                      const isSelected = selectedIds.has(p.id);
+                      const initials = p.name
+                        .replace(/[^A-Za-z0-9 ]/g, '')
+                        .split(' ')
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join('')
+                        .toUpperCase();
+
+                      return (
+                        <tr
+                          key={p.id}
+                          onClick={() => setSelectedDrawerPlan(p)}
+                          className={`hover:bg-slate-50/80 cursor-pointer transition ${
+                            isSelected ? 'bg-blue-50/50' : ''
+                          }`}
+                        >
+                          <td className="py-3 px-3 text-center" onClick={(e) => handleToggleRow(p.id, e)}>
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => {}}
+                              className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                            />
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-[10px] flex items-center justify-center shrink-0">
+                                {initials || 'SP'}
+                              </span>
+                              <div>
+                                <div className="font-semibold text-slate-900 text-xs hover:text-blue-600 transition">
+                                  {p.name}
+                                </div>
+                                <div className="font-mono text-[10px] text-slate-400">{p.id}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="font-medium text-slate-800">{p.laneNode}</div>
+                            <div className="text-[11px] text-slate-400">{p.carrier}</div>
+                          </td>
+                          <td className="py-3 px-3 font-mono font-medium text-slate-700 whitespace-nowrap">
+                            {p.quantity}
+                          </td>
+                          <td className="py-3 px-3 font-medium text-slate-600 whitespace-nowrap">
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-slate-400" />
+                              <span>{p.eta}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            <StatusBadge status={p.status} />
+                          </td>
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            {p.agentTouched ? (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedDrawerPlan(p);
+                                }}
+                                title="Chain of Evidence: Agent → Model → Data → Policy → Approval → Outcome"
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[10px] font-semibold border border-indigo-200 transition"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
+                                <span>COE ✓</span>
+                              </button>
+                            ) : (
+                              <span className="text-slate-400 text-[11px]">Human</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-3 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-1">
+                              <button
+                                onClick={() => onOpenPlan(p.id)}
+                                className="p-1.5 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition"
+                                title="Open full record"
+                              >
+                                <ChevronRight className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Footer */}
+            <div className="px-4 py-3 bg-slate-50/50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+              <span>
+                Showing 1–{filteredPlans.length} of {plans.length} supply plans
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  disabled
+                  className="px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-300 text-xs"
+                >
+                  ‹ Prev
+                </button>
+                <button className="px-2.5 py-1 rounded bg-blue-600 text-white font-semibold text-xs shadow-xs">
+                  1
+                </button>
+                <button
+                  disabled
+                  className="px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-300 text-xs"
+                >
+                  Next ›
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (4 cols): Embedded Agents & Disruption Sentinel */}
+        <div className="lg:col-span-4 space-y-4">
+          {/* Active Disruption Sentinel */}
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/80 rounded-xl p-4 shadow-xs space-y-3">
+            <div className="flex items-start gap-2.5">
+              <div className="p-2 rounded-lg bg-amber-500 text-white shrink-0 mt-0.5">
+                <AlertTriangle className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
+                  Chokepoint Disruption Sentinel
+                </h4>
+                <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                  <span className="font-semibold text-amber-950">SHP-88214 (Ocean Shanghai → Rotterdam)</span> delayed +4 days due to Suez congestion.
+                </p>
+              </div>
+            </div>
+            <div className="bg-white/80 p-2.5 rounded-lg border border-amber-200 text-xs text-slate-700 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] text-slate-500">Handling Agent:</span>
+                <span className="font-semibold text-indigo-700">Logistics Rerouter (AGT-SCM-03)</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] text-slate-500">Contingency Plan:</span>
+                <span className="font-mono text-[11px] font-semibold text-slate-800">Cape of Good Hope Route</span>
+              </div>
+            </div>
+            <button
+              onClick={() => handleAuthorizeReroute('SHP-88214')}
+              className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>Authorize Cape Contingency Reroute</span>
+            </button>
+          </div>
+
+          {/* Embedded Agents Card */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Embedded SCM Agents</h3>
+                <p className="text-[11px] text-slate-500 mt-0.5">{agents.length} active digital workers</p>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
+                Autonomous SCM
+              </span>
+            </div>
+
+            <div className="space-y-2.5">
+              {agents.map((ag) => {
+                const isPaused = ag.status === 'Paused';
+                return (
+                  <div
+                    key={ag.id}
+                    onClick={() => setInspectingAgent(ag)}
+                    className="p-3 rounded-lg border border-slate-200 hover:border-slate-300 hover:shadow-xs cursor-pointer transition space-y-2 bg-slate-50/50 hover:bg-white"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            isPaused ? 'bg-slate-400' : 'bg-emerald-500 animate-pulse'
+                          }`}
+                        />
+                        <span className="font-semibold text-xs text-slate-900">{ag.name}</span>
+                      </div>
+                      <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold">
+                        {ag.autonomyLevel}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">{ag.role}</p>
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+                      <span>{ag.status} • {ag.owner}</span>
+                      <span className="font-mono text-slate-600">{ag.actionsWeek} ops/wk</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Quick Drawer for Record Inspection */}
+      {selectedDrawerPlan && (
+        <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+            onClick={() => setSelectedDrawerPlan(null)}
+          />
+          <div className="relative w-full max-w-lg bg-white shadow-2xl h-full flex flex-col z-10 animate-slide-left">
+            {/* Drawer Header */}
+            <div className="p-5 border-b border-slate-200 flex items-start justify-between bg-slate-50/50">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-semibold text-xs text-blue-600">{selectedDrawerPlan.id}</span>
+                  <StatusBadge status={selectedDrawerPlan.status} />
+                </div>
+                <h3 className="text-base font-bold text-slate-900 mt-1">{selectedDrawerPlan.name}</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Sub-module: {selectedDrawerPlan.submodule}</p>
+              </div>
+              <button
+                onClick={() => setSelectedDrawerPlan(null)}
+                className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-500"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Drawer Body */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
+              {/* Core Attributes List */}
+              <div className="space-y-2">
+                <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Fulfillment & Route</h4>
+                <div className="bg-slate-50 rounded-lg p-3 space-y-2 border border-slate-200">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Lane / Node:</span>
+                    <span className="font-semibold text-slate-800">{selectedDrawerPlan.laneNode}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Quantity:</span>
+                    <span className="font-mono font-semibold text-slate-800">{selectedDrawerPlan.quantity}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Carrier:</span>
+                    <span className="font-medium text-slate-800">{selectedDrawerPlan.carrier}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">ETA:</span>
+                    <span className="font-semibold text-slate-800">{selectedDrawerPlan.eta}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Handled by:</span>
+                    <span className="font-medium text-indigo-700">
+                      {selectedDrawerPlan.agentTouched ? `${selectedDrawerPlan.handlingAgent} (Digital Worker)` : 'Human team'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chain of Evidence Pipeline Box */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Chain of Evidence</h4>
+                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 font-semibold">
+                    Hash Verified
+                  </span>
+                </div>
+
+                {selectedDrawerPlan.agentTouched ? (
+                  <div className="bg-slate-900 text-slate-200 rounded-xl p-4 space-y-3 font-mono text-[11px]">
+                    <div className="grid grid-cols-6 gap-1 text-center pb-2 border-b border-slate-800 text-[10px]">
+                      <div>
+                        <div className="font-bold text-blue-400">Agent</div>
+                        <div className="text-slate-400 text-[9px] truncate">{selectedDrawerPlan.handlingAgent}</div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-purple-400">Model</div>
+                        <div className="text-slate-400 text-[9px]">nexora-3.2</div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-indigo-400">Data</div>
+                        <div className="text-slate-400 text-[9px]">AIS Telemetry</div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-amber-400">Policy</div>
+                        <div className="text-slate-400 text-[9px]">POL-SCM-14</div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-emerald-400">Approval</div>
+                        <div className="text-slate-400 text-[9px]">FW 8/8</div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-cyan-400">Outcome</div>
+                        <div className="text-slate-400 text-[9px]">{selectedDrawerPlan.status}</div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs font-sans">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Evidence Hash:</span>
+                        <span className="font-mono text-[11px] text-slate-300">{selectedDrawerPlan.evidenceHash}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-400">
+                        <span>Action Firewall:</span>
+                        <span className="text-emerald-400 font-semibold">8/8 checks passed</span>
+                      </div>
+                      <div className="flex justify-between text-slate-400">
+                        <span>Decision Note:</span>
+                        <span className="text-slate-300">Auto-approved within L3 autonomy guardrails</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500">
+                    <p className="font-semibold text-slate-700">Handled by Human Operators</p>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Assign an embedded SCM agent to initiate automatic Chain of Evidence telemetry capture.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Anomaly & Risk Analysis */}
+              {selectedDrawerPlan.riskReason && (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg space-y-1">
+                  <div className="font-bold text-amber-900 text-xs">SCM Twin Risk Telemetry</div>
+                  <p className="text-amber-800 text-[11px]">{selectedDrawerPlan.riskReason}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Drawer Footer Actions */}
+            <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-2">
+              <button
+                onClick={() => {
+                  setSelectedDrawerPlan(null);
+                  onOpenPlan(selectedDrawerPlan.id);
+                }}
+                className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs transition"
+              >
+                <span>Open Full Record</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => {
+                    handleAuthorizeReroute(selectedDrawerPlan.id);
+                    setSelectedDrawerPlan(null);
+                  }}
+                  className="px-3 py-2 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-xs font-medium"
+                >
+                  Approve / Reroute
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. Agent Governance Inspector Modal */}
+      {inspectingAgent && (
+        <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 max-w-md w-full space-y-4 text-xs animate-scale-up shadow-2xl">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold">
+                  {inspectingAgent.name.slice(0, 2)}
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">{inspectingAgent.name}</h3>
+                  <p className="text-[11px] text-slate-500 font-mono">{inspectingAgent.id} • {inspectingAgent.autonomyLevel}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setInspectingAgent(null)}
+                className="p-1 rounded hover:bg-slate-100 text-slate-400"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-slate-600 text-xs leading-relaxed">{inspectingAgent.role}</p>
+
+            <div className="bg-slate-50 rounded-lg p-3 space-y-2 border border-slate-200">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Accountable Human Owner:</span>
+                <span className="font-semibold text-slate-800">{inspectingAgent.owner}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Autonomy Tier:</span>
+                <span className="font-medium text-slate-800">{inspectingAgent.autonomyLabel}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Weekly Throughput:</span>
+                <span className="font-mono font-semibold text-slate-800">{inspectingAgent.actionsWeek} actions</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Human Approval Rate:</span>
+                <span className="font-mono font-semibold text-emerald-700">{inspectingAgent.approvalRate}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Firewall Sentinel Status:</span>
+                <span className={`font-semibold ${inspectingAgent.status === 'Active' ? 'text-emerald-700' : 'text-amber-700'}`}>
+                  {inspectingAgent.status === 'Active' ? 'Active within Guardrails' : 'Paused by Operator'}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-slate-700 space-y-1">
+              <div className="font-semibold text-blue-900 text-[11px]">Latest Verified Action:</div>
+              <div className="text-[11px] text-blue-800">{inspectingAgent.recentAction}</div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setInspectingAgent(null);
+                  navigateToRecord('ai-workforce', inspectingAgent.id);
+                }}
+                className="px-3 py-1.5 text-blue-600 hover:underline font-semibold"
+              >
+                View in AI Workforce Directory →
+              </button>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setInspectingAgent(null)}
+                  className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-50"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleToggleAgentStatus(inspectingAgent.name)}
+                  className={`px-4 py-1.5 rounded-lg font-semibold text-white shadow-xs ${
+                    inspectingAgent.status === 'Active' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-emerald-600 hover:bg-emerald-700'
+                  }`}
+                >
+                  {inspectingAgent.status === 'Active' ? 'Pause Agent' : 'Resume Agent'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. New Supply Plan Modal */}
+      {showNewModal && (
+        <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 max-w-lg w-full space-y-4 text-xs shadow-2xl animate-scale-up">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Create New Supply Plan</h3>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Created supply chain records are registered in the Digital Twin and tracked through Action Firewall.
+                </p>
+              </div>
+              <button onClick={() => setShowNewModal(false)} className="p-1 rounded text-slate-400 hover:bg-slate-100">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 font-medium">
+                {formError}
+              </div>
+            )}
+
+            <form onSubmit={handleCreatePlan} noValidate className="space-y-3">
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Plan / Shipment Title *</label>
+                <input
+                  type="text"
+                  value={newPlan.name}
+                  onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
+                  placeholder="e.g. Weekly supply plan — Americas or Air — Penang → Dallas"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Lane / Fulfillment Node *</label>
+                  <input
+                    type="text"
+                    value={newPlan.laneNode}
+                    onChange={(e) => setNewPlan({ ...newPlan, laneNode: e.target.value })}
+                    placeholder="e.g. Dallas Fort Worth DC · 12 TEU"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Quantity</label>
+                  <input
+                    type="text"
+                    value={newPlan.quantity}
+                    onChange={(e) => setNewPlan({ ...newPlan, quantity: e.target.value })}
+                    placeholder="e.g. 14,200 units"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Sub-module</label>
+                  <select
+                    value={newPlan.submodule}
+                    onChange={(e) => setNewPlan({ ...newPlan, submodule: e.target.value })}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-xs focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="Demand Planning">Demand Planning</option>
+                    <option value="Supply Planning">Supply Planning</option>
+                    <option value="Logistics">Logistics</option>
+                    <option value="Inventory">Inventory</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Estimated ETA</label>
+                  <input
+                    type="text"
+                    value={newPlan.eta}
+                    onChange={(e) => setNewPlan({ ...newPlan, eta: e.target.value })}
+                    placeholder="e.g. Nov 14"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Logistics Carrier</label>
+                  <input
+                    type="text"
+                    value={newPlan.carrier}
+                    onChange={(e) => setNewPlan({ ...newPlan, carrier: e.target.value })}
+                    placeholder="e.g. Kuehne+Nagel or DHL"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Assign to Agent</label>
+                  <select
+                    value={newPlan.assignedAgent}
+                    onChange={(e) => setNewPlan({ ...newPlan, assignedAgent: e.target.value })}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-xs focus:outline-none focus:border-blue-500"
+                  >
+                    {agents.map((a) => (
+                      <option key={a.id} value={a.name}>
+                        {a.name} ({a.autonomyLevel})
+                      </option>
+                    ))}
+                    <option value="Human team">Human team</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowNewModal(false)}
+                  className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-xs"
+                >
+                  Create supply plan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// SUPPLY CHAIN FULL RECORD DETAIL SCREEN
+// ============================================================================
+
+function SupplyChainDetailScreen({
+  plan,
+  plans,
+  agents,
+  onBack,
+  navigateToRecord,
+  setAppState,
+  notify,
+  requestConfirmation
+}) {
+  if (!plan) {
+    return (
+      <div className="bg-white p-8 rounded-xl border border-slate-200 text-center space-y-3">
+        <p className="text-slate-600 text-sm font-semibold">Supply chain record not found.</p>
+        <button onClick={onBack} className="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold">
+          Return to Supply Chain
+        </button>
+      </div>
+    );
+  }
+
+  const assignedAgentObj = agents.find((a) => a.name === plan.handlingAgent);
+  const relatedPlans = plans.filter((p) => p.id !== plan.id).slice(0, 3);
+
+  const handleApprove = () => {
+    setAppState((prev) => ({
+      ...prev,
+      supplyChainPlans: prev.supplyChainPlans.map((p) =>
+        p.id === plan.id ? { ...p, status: 'Approved' } : p
+      ),
+      auditLog: [
+        {
+          id: `AUD-APP-${Math.floor(1000 + Math.random() * 9000)}`,
+          actor: 'CISO & VP Enterprise Operations',
+          action: `Approved SCM Plan ${plan.id} (${plan.name}) via Action Firewall.`,
+          time: 'Just now',
+          status: 'Authorized'
+        },
+        ...prev.auditLog
+      ]
+    }));
+    notify(`Approved ${plan.id} — logged to Chain of Evidence and Digital Twin.`, 'success');
+  };
+
+  const handleEscalate = () => {
+    setAppState((prev) => ({
+      ...prev,
+      supplyChainPlans: prev.supplyChainPlans.map((p) =>
+        p.id === plan.id ? { ...p, status: 'At Risk' } : p
+      ),
+      auditLog: [
+        {
+          id: `AUD-ESC-${Math.floor(1000 + Math.random() * 9000)}`,
+          actor: 'Operations Control Tower',
+          action: `Escalated ${plan.id} to SCM Director queue for human intervention.`,
+          time: 'Just now',
+          status: 'Escalated'
+        },
+        ...prev.auditLog
+      ]
+    }));
+    notify(`Escalated ${plan.id} to VP Supply Chain & Director of Logistics.`, 'info');
+  };
+
+  const workflowSteps = ['01 Demand signal', '02 Forecast update', '03 Supply plan', '04 Purchase orders', '05 Production orders'];
+  const curStep = plan.status === 'Approved' ? 3 : plan.status === 'Delivered' ? 4 : plan.status === 'In Progress' ? 2 : 1;
+
+  return (
+    <div className="space-y-6">
+      {/* 1. Breadcrumbs & Top Actions */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onBack}
+            className="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <button onClick={onBack} className="hover:underline text-blue-600 font-medium">
+                Supply Chain
+              </button>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span>{plan.submodule}</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-mono font-semibold text-slate-700">{plan.id}</span>
+            </div>
+            <h1 className="text-xl font-bold text-slate-900 mt-0.5">{plan.name}</h1>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <StatusBadge status={plan.status} />
+          <button
+            onClick={handleEscalate}
+            className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium"
+          >
+            Escalate
+          </button>
+          {plan.status !== 'Approved' && (
+            <button
+              onClick={handleApprove}
+              className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs"
+            >
+              Approve Plan
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* 2. Signature Workflow Position Bar */}
+      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-2">
+        <div className="text-xs font-semibold text-slate-700">Signature Workflow Lifecycle Position</div>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+          {workflowSteps.map((step, idx) => {
+            const isCompleted = idx < curStep;
+            const isCurrent = idx === curStep;
+            return (
+              <div
+                key={step}
+                className={`p-2.5 rounded-lg border text-xs font-medium flex items-center gap-2 transition ${
+                  isCurrent
+                    ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
+                    : isCompleted
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    : 'bg-slate-50 text-slate-400 border-slate-200'
+                }`}
+              >
+                {isCompleted ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                ) : (
+                  <span className="font-mono text-[10px] opacity-70">0{idx + 1}</span>
+                )}
+                <span className="truncate">{step.slice(3)}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 3. Main Detail Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column (8 cols): Specs, Evidence & Timeline */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Specifications Card */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="px-5 py-3.5 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                Fulfillment Node & Logistics Specifications
+              </span>
+              <span className="font-mono text-xs text-slate-500">{plan.id}</span>
+            </div>
+            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Lane / Destination Node:</span>
+                <p className="font-semibold text-slate-900">{plan.laneNode}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Consignment Quantity:</span>
+                <p className="font-mono font-semibold text-slate-900">{plan.quantity}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Logistics Carrier & Partner:</span>
+                <p className="font-medium text-slate-800">{plan.carrier}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Estimated Time of Arrival (ETA):</span>
+                <p className="font-semibold text-slate-800">{plan.eta}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Transport Mode:</span>
+                <p className="font-medium text-slate-800">{plan.mode}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Sub-module:</span>
+                <p className="font-medium text-slate-800">{plan.submodule}</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Tenant Domain:</span>
+                <p className="font-medium text-slate-800">Apex Global Financial — SCM Enclave</p>
+              </div>
+              <div className="space-y-1">
+                <span className="text-slate-400 text-[11px]">Governance Policy Binding:</span>
+                <p className="font-mono font-medium text-indigo-700">{plan.policy}</p>
+              </div>
+            </div>
+
+            {/* Cross-Module Golden Thread Linkage */}
+            <div className="px-5 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2 text-slate-600">
+                <Compass className="w-3.5 h-3.5 text-blue-600" />
+                <span>Connected Golden Thread Entity:</span>
+                <button
+                  onClick={() => navigateToRecord('incident-detail', plan.linkedIncident)}
+                  className="font-mono font-semibold text-blue-600 hover:underline"
+                >
+                  {plan.linkedIncident}
+                </button>
+                <span className="text-slate-400">•</span>
+                <button
+                  onClick={() => navigateToRecord('endpoint-detail', plan.linkedDevice)}
+                  className="font-mono font-semibold text-blue-600 hover:underline"
+                >
+                  {plan.linkedDevice}
+                </button>
+              </div>
+              <span className="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                Digital Twin Synced
+              </span>
+            </div>
+          </div>
+
+          {/* Chain of Evidence Card */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Cryptographic Chain of Evidence
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  End-to-end immutability record registered with the Action Firewall
+                </p>
+              </div>
+              <span className="font-mono text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                Evidence ID: {plan.evidenceHash}
+              </span>
+            </div>
+
+            <div className="bg-slate-900 text-slate-200 rounded-xl p-4 space-y-3 font-mono text-xs">
+              <div className="grid grid-cols-6 gap-2 text-center pb-3 border-b border-slate-800 text-[11px]">
+                <div>
+                  <div className="font-bold text-blue-400">Agent</div>
+                  <div className="text-slate-400 text-[10px] truncate">{plan.handlingAgent}</div>
+                </div>
+                <div>
+                  <div className="font-bold text-purple-400">Model</div>
+                  <div className="text-slate-400 text-[10px]">nexora-3.2</div>
+                </div>
+                <div>
+                  <div className="font-bold text-indigo-400">Context</div>
+                  <div className="text-slate-400 text-[10px]">4 Twin Nodes</div>
+                </div>
+                <div>
+                  <div className="font-bold text-amber-400">Policy</div>
+                  <div className="text-slate-400 text-[10px]">{plan.policy}</div>
+                </div>
+                <div>
+                  <div className="font-bold text-emerald-400">Firewall</div>
+                  <div className="text-slate-400 text-[10px]">8/8 Checked</div>
+                </div>
+                <div>
+                  <div className="font-bold text-cyan-400">Outcome</div>
+                  <div className="text-slate-400 text-[10px]">{plan.status}</div>
+                </div>
+              </div>
+
+              <div className="space-y-1 font-sans text-xs text-slate-300">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Pre-execution Impact Assessment:</span>
+                  <span className="font-semibold text-emerald-400">Zero Critical Chokepoint Risk</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Action Firewall Nonce:</span>
+                  <span className="font-mono text-[11px] text-slate-400">0x8f2a994c1002bba4</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Audit Status:</span>
+                  <span className="text-emerald-400 font-semibold">Live Ingestion to GRC Evidence Library</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline of Sensor & Plan Events */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-4">
+            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+              Real-Time Supply Chain Activity & Telemetry Log
+            </h3>
+            <div className="space-y-3 text-xs">
+              <div className="flex gap-3 items-start">
+                <div className="w-2 h-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">Supply Plan {plan.id} registered in Digital Twin</div>
+                  <div className="text-slate-500 text-[11px]">09:12:04 UTC • System Orchestrator</div>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="w-2 h-2 rounded-full bg-indigo-600 mt-1.5 shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">
+                    {plan.handlingAgent} enriched plan with AIS maritime & hub queue telemetry
+                  </div>
+                  <div className="text-slate-500 text-[11px]">09:12:06 UTC • Autonomous Agent</div>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="w-2 h-2 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">
+                    Action Firewall 8/8 checks passed under Policy {plan.policy}
+                  </div>
+                  <div className="text-slate-500 text-[11px]">09:12:09 UTC • AI Action Firewall</div>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="w-2 h-2 rounded-full bg-cyan-600 mt-1.5 shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">Status marked {plan.status}</div>
+                  <div className="text-slate-500 text-[11px]">09:14:31 UTC • SCM Control Plane</div>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="w-2 h-2 rounded-full bg-purple-600 mt-1.5 shrink-0" />
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">Evidence recorded in Immutable Ledger (EV-{plan.evidenceHash.slice(0, 6)})</div>
+                  <div className="text-slate-500 text-[11px]">09:14:32 UTC • GRC Evidence Service</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (4 cols): Assigned Agent & Related Records */}
+        <div className="lg:col-span-4 space-y-5">
+          {/* Assigned Digital Worker */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-3">
+            <div className="text-xs font-bold text-slate-900 uppercase tracking-wider">Handling Digital Worker</div>
+            {assignedAgentObj ? (
+              <div className="bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-900">{assignedAgentObj.name}</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 font-bold">
+                    {assignedAgentObj.autonomyLevel}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-relaxed">{assignedAgentObj.role}</p>
+                <div className="pt-2 border-t border-slate-200 text-[11px] space-y-1 text-slate-600">
+                  <div className="flex justify-between">
+                    <span>Owner:</span>
+                    <span className="font-semibold text-slate-800">{assignedAgentObj.owner}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Approval Rate:</span>
+                    <span className="font-mono text-emerald-700 font-semibold">{assignedAgentObj.approvalRate}%</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => navigateToRecord('ai-workforce', assignedAgentObj.id)}
+                  className="w-full mt-2 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium"
+                >
+                  Inspect in AI Workforce →
+                </button>
+              </div>
+            ) : (
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-500">
+                Handled by human logistics specialists.
+              </div>
+            )}
+          </div>
+
+          {/* Related Records */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-3">
+            <div className="text-xs font-bold text-slate-900 uppercase tracking-wider">Related Supply Plans</div>
+            <div className="space-y-2">
+              {relatedPlans.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => navigateToRecord('supply-chain-detail', r.id)}
+                  className="w-full text-left p-2.5 rounded-lg border border-slate-100 hover:border-slate-300 hover:bg-slate-50 transition text-xs block"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-800 truncate">{r.name}</span>
+                    <StatusBadge status={r.status} />
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
+                    <span>{r.laneNode}</span>
+                    <span className="font-mono">{r.quantity}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 // ============================================================================
 // CONNECTED DOMAIN VIEWS FOR REMAINING PLATFORM & GRC MODULES
