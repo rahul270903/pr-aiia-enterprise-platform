@@ -3452,80 +3452,80 @@ function CommandCenterScreen({
         </div>
       </div>
 
-      {/* 5 Interactive Executive KPI Cards */}
+      {/* 5 Interactive Executive KPI Cards (Nexora Signature Layout) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div
           onClick={() => setActiveScreen('itsm')}
-          className="bg-white p-4 rounded-xl border border-slate-200 hover:border-blue-500 cursor-pointer transition shadow-2xs group"
+          className="bg-white p-4 rounded-xl border border-slate-200 border-l-[4px] border-l-blue-600 hover:shadow-md cursor-pointer transition-all shadow-xs group"
         >
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Open IT Incidents</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Open IT Incidents</span>
             <MessageSquare className="w-4 h-4 text-blue-600 group-hover:scale-110 transition" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{metrics.openIncidents}</div>
-          <div className="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-            <span>{isVerified ? 'P1 Auto-Resolved' : '1 Critical P1 Active'}</span>
-            <span className="text-blue-600 font-medium">Open ITSM →</span>
+          <div className="text-3xl font-extrabold text-slate-900 mt-2 font-mono">{metrics.openIncidents}</div>
+          <div className="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="truncate">{isVerified ? 'P1 Auto-Resolved' : '1 Critical P1 Active'}</span>
+            <span className="text-blue-600 font-bold shrink-0">Open ITSM →</span>
           </div>
         </div>
 
         <div
           onClick={() => setActiveScreen('endpoints')}
-          className="bg-white p-4 rounded-xl border border-slate-200 hover:border-blue-500 cursor-pointer transition shadow-2xs group"
+          className="bg-white p-4 rounded-xl border border-slate-200 border-l-[4px] border-l-indigo-600 hover:shadow-md cursor-pointer transition-all shadow-xs group"
         >
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Managed Endpoints</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Managed Endpoints</span>
             <Laptop className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{metrics.managedEndpoints.toLocaleString()}</div>
-          <div className="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-            <span>END-FIN-094: {mainEp?.healthScore}/100</span>
-            <span className="text-blue-600 font-medium">Inventory →</span>
+          <div className="text-3xl font-extrabold text-slate-900 mt-2 font-mono">{metrics.managedEndpoints.toLocaleString()}</div>
+          <div className="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="truncate">END-FIN-094: {mainEp?.healthScore}/100</span>
+            <span className="text-indigo-600 font-bold shrink-0">Inventory →</span>
           </div>
         </div>
 
         <div
           onClick={() => setActiveScreen('exposure')}
-          className="bg-white p-4 rounded-xl border border-slate-200 hover:border-red-400 cursor-pointer transition shadow-2xs group"
+          className="bg-white p-4 rounded-xl border border-slate-200 border-l-[4px] border-l-red-600 hover:shadow-md cursor-pointer transition-all shadow-xs group"
         >
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Critical Vulnerabilities</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Critical Vulns</span>
             <ShieldAlert className="w-4 h-4 text-red-600 group-hover:scale-110 transition" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{metrics.criticalVulns}</div>
-          <div className="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-            <span>{metrics.criticalVulns > 0 ? 'CVE-2026-4109 (KEV)' : 'Zero Active KEVs'}</span>
-            <span className="text-red-600 font-medium">SecOps →</span>
+          <div className="text-3xl font-extrabold text-slate-900 mt-2 font-mono">{metrics.criticalVulns}</div>
+          <div className="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="truncate">{metrics.criticalVulns > 0 ? 'CVE-2026-4109 (KEV)' : 'Zero Active KEVs'}</span>
+            <span className="text-red-600 font-bold shrink-0">SecOps →</span>
           </div>
         </div>
 
         <div
           onClick={() => setActiveScreen('ai-firewall')}
-          className="bg-white p-4 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer transition shadow-2xs group"
+          className="bg-white p-4 rounded-xl border border-slate-200 border-l-[4px] border-l-amber-500 hover:shadow-md cursor-pointer transition-all shadow-xs group"
         >
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Pending AI Approvals</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pending Approvals</span>
             <Shield className="w-4 h-4 text-amber-600 group-hover:scale-110 transition" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{metrics.pendingApprovals}</div>
-          <div className="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-            <span>FW-REQ-9921: {mainFw?.approvalStatus}</span>
-            <span className="text-amber-600 font-medium">Review →</span>
+          <div className="text-3xl font-extrabold text-slate-900 mt-2 font-mono">{metrics.pendingApprovals}</div>
+          <div className="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="truncate">FW-REQ-9921: {mainFw?.approvalStatus}</span>
+            <span className="text-amber-600 font-bold shrink-0">Review →</span>
           </div>
         </div>
 
         <div
           onClick={() => setActiveScreen('grc-evidence')}
-          className="bg-white p-4 rounded-xl border border-slate-200 hover:border-emerald-500 cursor-pointer transition shadow-2xs group"
+          className="bg-white p-4 rounded-xl border border-slate-200 border-l-[4px] border-l-emerald-600 hover:shadow-md cursor-pointer transition-all shadow-xs group"
         >
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-            <span>Continuous GRC Score</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Continuous GRC</span>
             <FileCheck className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition" />
           </div>
-          <div className="text-2xl font-bold text-emerald-700 mt-2">{metrics.complianceScore}%</div>
-          <div className="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
-            <span>SI-2: {isVerified ? 'Compliant' : 'Gap Open'}</span>
-            <span className="text-emerald-600 font-medium">Controls →</span>
+          <div className="text-3xl font-extrabold text-emerald-700 mt-2 font-mono">{metrics.complianceScore}%</div>
+          <div className="text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="truncate">SI-2: {isVerified ? 'Compliant' : 'Gap Open'}</span>
+            <span className="text-emerald-600 font-bold shrink-0">Controls →</span>
           </div>
         </div>
       </div>
