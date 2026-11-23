@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { DEFAULT_CRM_RECORDS, DEFAULT_CRM_AGENTS, CRMScreen, CRMDetailScreen } from './CRMComponents';
+import { ReportsScreen, AdministrationScreen, PlatformSettingsScreen } from './AdminAndAnalyticsComponents';
 import {
   Truck, Ship, Plane, Package, Boxes,
   Shield, Server, AlertTriangle, CheckCircle2, Clock, Search, Bell, HelpCircle,
@@ -2897,7 +2898,7 @@ export default function App() {
           {[
             'aiops', 'assets', 'zero-trust', 'esm', 'portfolio', 'build-extend',
             'fed-nist', 'policy-reg', 'risk-mgmt', 'third-party', 'ethics', 'privacy',
-            'ai-gov', 'grc-reporting', 'reports', 'administration', 'settings'
+            'ai-gov', 'grc-reporting'
           ].includes(activeScreen) && (
             <ConnectedModuleScreen
               moduleKey={activeScreen}
@@ -2907,6 +2908,31 @@ export default function App() {
               notify={notify}
               requestConfirmation={requestConfirmation}
               onResetDemo={handleResetDemo}
+            />
+          )}
+
+          {activeScreen === 'reports' && (
+            <ReportsScreen
+              appState={appState}
+              navigateToRecord={navigateToRecord}
+              notify={notify}
+            />
+          )}
+
+          {activeScreen === 'administration' && (
+            <AdministrationScreen
+              appState={appState}
+              setAppState={setAppState}
+              notify={notify}
+            />
+          )}
+
+          {activeScreen === 'settings' && (
+            <PlatformSettingsScreen
+              appState={appState}
+              setAppState={setAppState}
+              onResetDemo={handleResetDemo}
+              notify={notify}
             />
           )}
         </main>

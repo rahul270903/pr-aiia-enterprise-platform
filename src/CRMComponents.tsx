@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { KpiCard } from './AdminAndAnalyticsComponents';
 import {
   Users, DollarSign, TrendingUp, UserPlus, ArrowUpRight, PhoneCall, Target,
   ShieldCheck, CheckCircle2, AlertTriangle, Sparkles, Download, Plus, Filter,
@@ -777,75 +778,44 @@ export function CRMScreen({
         </div>
       </div>
 
-      {/* 2. Top Metric KPI Cards (Nexora k: Win Rate, Pipeline Coverage, Churn TTM + AI Deal Assist) */}
+      {/* 2. Top Metric KPI Cards (Nexora Signature Layout with Accent Borders & Sparklines) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-slate-200 p-4.5 shadow-xs space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Win Rate</span>
-            <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-sm border border-emerald-200">
-              +2.7 pts
-            </span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-slate-900">31.4%</span>
-            <span className="text-xs text-slate-400">quarter-to-date</span>
-          </div>
-          <div className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
-            <TrendingUp className="w-3 h-3 text-emerald-500" />
-            <span>Top percentile in enterprise B2B software</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-slate-200 p-4.5 shadow-xs space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Pipeline Coverage</span>
-            <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-sm border border-emerald-200">
-              +0.3x
-            </span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-slate-900">3.4x</span>
-            <span className="text-xs text-slate-400">weighted ARR</span>
-          </div>
-          <div className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
-            <CheckCircle2 className="w-3 h-3 text-blue-500" />
-            <span>Above recommended 3.0x quota guardrail</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-slate-200 p-4.5 shadow-xs space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Churn (TTM)</span>
-            <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-sm border border-emerald-200">
-              −0.4 pts
-            </span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-slate-900">5.2%</span>
-            <span className="text-xs text-slate-400">gross revenue</span>
-          </div>
-          <div className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
-            <ShieldCheck className="w-3 h-3 text-emerald-500" />
-            <span>Monitored by Churn Sentinel agent</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-slate-200 p-4.5 shadow-xs space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Touchless AI Deal Assist</span>
-            <span className="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded-sm border border-indigo-200">
-              +12.4 pts
-            </span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-slate-900">68.0%</span>
-            <span className="text-xs text-slate-400">of opportunities</span>
-          </div>
-          <div className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
-            <Sparkles className="w-3 h-3 text-indigo-500" />
-            <span>Enriched & quoted without human keying</span>
-          </div>
-        </div>
+        <KpiCard
+          title="Win Rate"
+          value="31.4%"
+          subtext="quarter-to-date"
+          trend="+2.7 pts"
+          trendPositive={true}
+          accentColor="blue"
+          sparkValues={[26, 27.5, 28, 29.2, 30.1, 30.8, 31.4]}
+        />
+        <KpiCard
+          title="Pipeline Coverage"
+          value="3.4x"
+          subtext="weighted ARR"
+          trend="+0.3x"
+          trendPositive={true}
+          accentColor="indigo"
+          sparkValues={[2.9, 3.0, 3.1, 3.2, 3.25, 3.35, 3.4]}
+        />
+        <KpiCard
+          title="Churn (TTM)"
+          value="5.2%"
+          subtext="gross revenue"
+          trend="−0.4 pts"
+          trendPositive={true}
+          accentColor="emerald"
+          sparkValues={[6.2, 6.0, 5.8, 5.6, 5.5, 5.3, 5.2]}
+        />
+        <KpiCard
+          title="Touchless AI Deal Assist"
+          value="68.0%"
+          subtext="of opportunities"
+          trend="+12.4 pts"
+          trendPositive={true}
+          accentColor="purple"
+          sparkValues={[48, 52, 57, 61, 63, 66, 68]}
+        />
       </div>
 
       {/* 3. Interactive Signature Workflow Bar (Lead -> Qualification -> Opportunity -> Quote -> Order) */}
