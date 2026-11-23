@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { DEFAULT_CRM_RECORDS, DEFAULT_CRM_AGENTS, CRMScreen, CRMDetailScreen } from './CRMComponents';
 import {
   Truck, Ship, Plane, Package, Boxes,
   Shield, Server, AlertTriangle, CheckCircle2, Clock, Search, Bell, HelpCircle,
@@ -218,6 +219,8 @@ const DEFAULT_SUPPLY_CHAIN_AGENTS = [
 ];
 
 const INITIAL_STATE = {
+  crmRecords: DEFAULT_CRM_RECORDS,
+  crmAgents: DEFAULT_CRM_AGENTS,
   goldenThreadStep: 1, // 1 to 11 tracking the executive scenario progress
   organization: 'Apex Global Financial — Prod',
   currentUserRole: 'CISO & VP Enterprise Operations',
@@ -1108,7 +1111,10 @@ export default function App() {
   // Persistent state with LocalStorage fallback
   const [appState, setAppState] = useState(() => {
     try {
-      const saved = localStorage.getItem('pr_aiia_enterprise_state_v3') || localStorage.getItem('pr_aiia_enterprise_state_v2');
+      const saved =
+        localStorage.getItem('pr_aiia_enterprise_state_v4') ||
+        localStorage.getItem('pr_aiia_enterprise_state_v3') ||
+        localStorage.getItem('pr_aiia_enterprise_state_v2');
       if (saved) {
         const parsed = JSON.parse(saved);
         return {
@@ -1121,7 +1127,15 @@ export default function App() {
           supplyChainAgents:
             Array.isArray(parsed.supplyChainAgents) && parsed.supplyChainAgents.length > 0
               ? parsed.supplyChainAgents
-              : DEFAULT_SUPPLY_CHAIN_AGENTS
+              : DEFAULT_SUPPLY_CHAIN_AGENTS,
+          crmRecords:
+            Array.isArray(parsed.crmRecords) && parsed.crmRecords.length > 0
+              ? parsed.crmRecords
+              : DEFAULT_CRM_RECORDS,
+          crmAgents:
+            Array.isArray(parsed.crmAgents) && parsed.crmAgents.length > 0
+              ? parsed.crmAgents
+              : DEFAULT_CRM_AGENTS
         };
       }
     } catch (e) {
@@ -1132,7 +1146,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('pr_aiia_enterprise_state_v3', JSON.stringify(appState));
+      localStorage.setItem('pr_aiia_enterprise_state_v4', JSON.stringify(appState));
     } catch (e) {
       console.error(e);
     }
@@ -1148,6 +1162,7 @@ export default function App() {
   const [selectedAgentId, setSelectedAgentId] = useState('AGT-03');
   const [selectedFirewallId, setSelectedFirewallId] = useState('FW-REQ-9921');
   const [selectedSupplyChainId, setSelectedSupplyChainId] = useState('SHP-88214');
+  const [selectedCrmId, setSelectedCrmId] = useState('OPP-30871');
 
   // Sidebar Expand/Collapse State
   const [expandedSections, setExpandedSections] = useState({
@@ -1261,6 +1276,7 @@ export default function App() {
     if (screen === 'ai-workforce' && recordId) setSelectedAgentId(recordId);
     if (screen === 'ai-firewall' && recordId) setSelectedFirewallId(recordId);
     if ((screen === 'supply-chain' || screen === 'supply-chain-detail') && recordId) setSelectedSupplyChainId(recordId);
+    if ((screen === 'crm' || screen === 'crm-detail') && recordId) setSelectedCrmId(recordId);
     setActiveScreen(screen);
     setShowSearchDropdown(false);
   };
@@ -1795,6 +1811,7 @@ export default function App() {
       confirmLabel: 'Reset Demo Data',
       tone: 'warning',
       onConfirm: () => {
+        localStorage.removeItem('pr_aiia_enterprise_state_v4');
         localStorage.removeItem('pr_aiia_enterprise_state_v3');
         localStorage.removeItem('pr_aiia_enterprise_state_v2');
         setAppState(INITIAL_STATE);
@@ -1804,6 +1821,8 @@ export default function App() {
         setSelectedRemediationId('REM-2026-309');
         setSelectedControlId('SI-2');
         setSelectedFirewallId('FW-REQ-9921');
+        setSelectedSupplyChainId('SHP-88214');
+        setSelectedCrmId('OPP-30871');
         setActiveScreen('command-center');
         notify('Prototype state reset to initial Golden Thread scenario.', 'info');
       }
@@ -1866,6 +1885,26 @@ export default function App() {
     appState.aiAgents.forEach((a) => {
       if (a.id.toLowerCase().includes(q) || a.name.toLowerCase().includes(q)) {
         results.push({ type: 'AI Agent', id: a.id, label: a.name, screen: 'ai-workforce' });
+      }
+    });
+    (appState.supplyChainPlans || []).forEach((p) => {
+      if (p.id.toLowerCase().includes(q) || p.name.toLowerCase().includes(q) || p.laneNode.toLowerCase().includes(q) || p.carrier.toLowerCase().includes(q)) {
+        results.push({ type: 'Supply Plan', id: p.id, label: `${p.name} (${p.laneNode})`, screen: 'supply-chain-detail' });
+      }
+    });
+    (appState.crmRecords || []).forEach((c) => {
+      if (
+        c.id.toLowerCase().includes(q) ||
+        c.name.toLowerCase().includes(q) ||
+        c.account.toLowerCase().includes(q) ||
+        (c.contactName && c.contactName.toLowerCase().includes(q))
+      ) {
+        results.push({
+          type: 'CRM Deal',
+          id: c.id,
+          label: `${c.account} — ${c.name} (${c.amount})`,
+          screen: 'crm-detail'
+        });
       }
     });
     return results.slice(0, 10);
@@ -2098,6 +2137,7 @@ export default function App() {
       { id: 'remediation', label: 'Remediation & Approvals', icon: Zap },
       { id: 'assets', label: 'Asset & Spend Management', icon: HardDrive },
       { id: 'supply-chain', label: 'Supply Chain (SCM)', icon: Truck, badge: 'Live SCM', badgeColor: 'bg-indigo-500/20 text-indigo-300' },
+      { id: 'crm', label: 'CRM & Customer Pipeline', icon: Users, badge: 'Live Pipeline', badgeColor: 'bg-blue-500/20 text-blue-300' },
       { id: 'zero-trust', label: 'Secure Access (Zero Trust)', icon: Key },
       { id: 'esm', label: 'Enterprise & Customer Service', icon: Briefcase },
       { id: 'portfolio', label: 'Portfolio Management', icon: Layers },
@@ -2184,7 +2224,8 @@ export default function App() {
                     activeScreen === item.id ||
                     (item.id === 'itsm' && activeScreen === 'incident-detail') ||
                     (item.id === 'endpoints' && activeScreen === 'endpoint-detail') ||
-                    (item.id === 'supply-chain' && activeScreen === 'supply-chain-detail');
+                    (item.id === 'supply-chain' && activeScreen === 'supply-chain-detail') ||
+                    (item.id === 'crm' && activeScreen === 'crm-detail');
                   return (
                     <button
                       key={item.id}
@@ -2808,6 +2849,31 @@ export default function App() {
               plans={appState.supplyChainPlans || []}
               agents={appState.supplyChainAgents || []}
               onBack={() => setActiveScreen('supply-chain')}
+              navigateToRecord={navigateToRecord}
+              setAppState={setAppState}
+              notify={notify}
+              requestConfirmation={requestConfirmation}
+            />
+          )}
+
+          {activeScreen === 'crm' && (
+            <CRMScreen
+              records={appState.crmRecords || []}
+              agents={appState.crmAgents || []}
+              onOpenRecord={(id) => navigateToRecord('crm-detail', id)}
+              navigateToRecord={navigateToRecord}
+              setAppState={setAppState}
+              notify={notify}
+              requestConfirmation={requestConfirmation}
+            />
+          )}
+
+          {activeScreen === 'crm-detail' && (
+            <CRMDetailScreen
+              record={(appState.crmRecords || []).find((r) => r.id === selectedCrmId) || (appState.crmRecords || [])[0]}
+              records={appState.crmRecords || []}
+              agents={appState.crmAgents || []}
+              onBack={() => setActiveScreen('crm')}
               navigateToRecord={navigateToRecord}
               setAppState={setAppState}
               notify={notify}
