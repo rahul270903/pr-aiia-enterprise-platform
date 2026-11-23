@@ -9,7 +9,8 @@ import {
   RefreshCw, ExternalLink, MessageSquare, Sparkles, Database, Globe, Briefcase,
   Award, BookOpen, AlertOctagon, Sliders, Play, ShieldAlert, ShieldCheck,
   Laptop, HardDrive, Key, Users, FileCheck, GitBranch, Compass, Send, Trash2,
-  Edit3, Download, Upload, CheckSquare, ChevronUp, MoreHorizontal, Info
+  Edit3, Download, Upload, CheckSquare, ChevronUp, MoreHorizontal, Info,
+  Scale, TrendingUp, PanelLeft, PanelLeftClose, PanelLeftOpen
 } from 'lucide-react';
 
 // ============================================================================
@@ -1166,11 +1167,37 @@ export default function App() {
   const [selectedCrmId, setSelectedCrmId] = useState('OPP-30871');
 
   // Sidebar Expand/Collapse State
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     platform: true,
     grc: true,
-    aiWorkforce: true
+    aiWorkforce: true,
+    admin: true
   });
+
+  // Auto-expand section containing current active screen & keyboard shortcut
+  useEffect(() => {
+    if (['itsm', 'incident-detail', 'aiops', 'endpoints', 'endpoint-detail', 'exposure', 'remediation', 'assets', 'supply-chain', 'supply-chain-detail', 'crm', 'crm-detail', 'zero-trust', 'esm', 'portfolio', 'build-extend'].includes(activeScreen)) {
+      setExpandedSections((prev) => ({ ...prev, platform: true }));
+    } else if (['grc-evidence', 'fed-nist', 'policy-reg', 'risk-mgmt', 'third-party', 'ethics', 'privacy', 'ai-gov', 'grc-reporting'].includes(activeScreen)) {
+      setExpandedSections((prev) => ({ ...prev, grc: true }));
+    } else if (['ai-workforce', 'ai-firewall'].includes(activeScreen)) {
+      setExpandedSections((prev) => ({ ...prev, aiWorkforce: true }));
+    } else if (['reports', 'administration', 'settings'].includes(activeScreen)) {
+      setExpandedSections((prev) => ({ ...prev, admin: true }));
+    }
+  }, [activeScreen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        setSidebarCollapsed((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // UI Overlays & Modals
   const [globalSearch, setGlobalSearch] = useState('');
@@ -2128,37 +2155,160 @@ export default function App() {
     ];
   }, [appState]);
 
-  // Navigation structure for Sidebar
+  // Unified Navigation Structure for Sidebar
   const navStructure = {
     platform: [
-      { id: 'itsm', label: 'IT Service Management', icon: MessageSquare, badge: metrics.openIncidents },
+      { id: 'itsm', label: 'IT Service Management', icon: MessageSquare, badge: metrics.openIncidents, badgeColor: 'bg-slate-700/80 text-slate-200 border-slate-600/60' },
       { id: 'aiops', label: 'IT Operations & Self-Healing', icon: Activity },
       { id: 'endpoints', label: 'Autonomous Endpoint Mgmt', icon: Laptop },
-      { id: 'exposure', label: 'Exposure Mgmt & SecOps', icon: ShieldAlert, badge: metrics.criticalVulns > 0 ? metrics.criticalVulns : null, badgeColor: 'bg-red-500/20 text-red-300' },
+      { id: 'exposure', label: 'Exposure Mgmt & SecOps', icon: ShieldAlert, badge: metrics.criticalVulns > 0 ? metrics.criticalVulns : null, badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30' },
       { id: 'remediation', label: 'Remediation & Approvals', icon: Zap },
       { id: 'assets', label: 'Asset & Spend Management', icon: HardDrive },
-      { id: 'supply-chain', label: 'Supply Chain (SCM)', icon: Truck, badge: 'Live SCM', badgeColor: 'bg-indigo-500/20 text-indigo-300' },
-      { id: 'crm', label: 'CRM & Customer Pipeline', icon: Users, badge: 'Live Pipeline', badgeColor: 'bg-blue-500/20 text-blue-300' },
+      { id: 'supply-chain', label: 'Supply Chain (SCM)', icon: Truck, badge: 'Live', isLive: true, badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+      { id: 'crm', label: 'CRM & Customer Pipeline', icon: Users, badge: 'Live', isLive: true, badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
       { id: 'zero-trust', label: 'Secure Access (Zero Trust)', icon: Key },
       { id: 'esm', label: 'Enterprise & Customer Service', icon: Briefcase },
       { id: 'portfolio', label: 'Portfolio Management', icon: Layers },
       { id: 'build-extend', label: 'Build & Extend (Low-Code)', icon: GitBranch }
     ],
     grc: [
-      { id: 'grc-evidence', label: 'Evidence & Control Library', icon: FileCheck, badge: `${metrics.complianceScore}%`, badgeColor: 'bg-emerald-500/20 text-emerald-300' },
+      { id: 'grc-evidence', label: 'Evidence & Control Library', icon: FileCheck, badge: `${metrics.complianceScore}%`, badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
       { id: 'fed-nist', label: 'Federal Auth & NIST (RMF)', icon: Award },
       { id: 'policy-reg', label: 'Compliance, Policy & Reg Change', icon: BookOpen },
       { id: 'risk-mgmt', label: 'Enterprise Risk Management', icon: AlertTriangle },
       { id: 'third-party', label: 'Third-Party, Audit & Resilience', icon: Globe },
-      { id: 'ethics', label: 'Ethics, Conduct & Training', icon: Users },
+      { id: 'ethics', label: 'Ethics, Conduct & Training', icon: Scale },
       { id: 'privacy', label: 'Privacy & Regulated Data', icon: Lock },
       { id: 'ai-gov', label: 'AI Governance & EU AI Act', icon: Cpu },
-      { id: 'grc-reporting', label: 'GRC Assistant & Reporting', icon: BarChart3 }
+      { id: 'grc-reporting', label: 'GRC Assistant & Reporting', icon: FileText }
     ],
     aiWorkforce: [
-      { id: 'ai-workforce', label: 'AI Workforce Directory', icon: Sparkles, badge: '8 Agents' },
-      { id: 'ai-firewall', label: 'AI Action Firewall', icon: Shield, badge: metrics.pendingApprovals > 0 ? `${metrics.pendingApprovals} Req` : 'Clear', badgeColor: metrics.pendingApprovals > 0 ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300' }
+      { id: 'ai-workforce', label: 'AI Workforce Directory', icon: Sparkles, badge: '8 Agents', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
+      { id: 'ai-firewall', label: 'AI Action Firewall', icon: Shield, badge: metrics.pendingApprovals > 0 ? `${metrics.pendingApprovals} Pending` : 'Active', badgeColor: metrics.pendingApprovals > 0 ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' }
+    ],
+    admin: [
+      { id: 'reports', label: 'Reports & Executive Analytics', icon: TrendingUp, badge: 'New', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+      { id: 'administration', label: 'Administration & Guardrails', icon: Sliders, badge: '42 Rules', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+      { id: 'settings', label: 'Platform & Tenant Settings', icon: Settings, badge: 'v4.18', badgeColor: 'bg-slate-700/80 text-slate-300 border-slate-600/50' }
     ]
+  };
+
+  const isNavActive = (id: string) => {
+    if (activeScreen === id) return true;
+    if (id === 'itsm' && activeScreen === 'incident-detail') return true;
+    if (id === 'endpoints' && activeScreen === 'endpoint-detail') return true;
+    if (id === 'supply-chain' && activeScreen === 'supply-chain-detail') return true;
+    if (id === 'crm' && activeScreen === 'crm-detail') return true;
+    return false;
+  };
+
+  const renderNavRow = (item: any, accentColor: 'blue' | 'emerald' | 'purple' | 'amber' = 'blue') => {
+    const Icon = item.icon;
+    const isActive = isNavActive(item.id);
+
+    const accentClasses = {
+      blue: {
+        border: 'border-l-blue-500',
+        active: 'bg-blue-600/15 text-blue-300 font-semibold',
+        icon: 'text-blue-400'
+      },
+      emerald: {
+        border: 'border-l-emerald-500',
+        active: 'bg-emerald-600/15 text-emerald-300 font-semibold',
+        icon: 'text-emerald-400'
+      },
+      purple: {
+        border: 'border-l-purple-500',
+        active: 'bg-purple-600/15 text-purple-300 font-semibold',
+        icon: 'text-purple-400'
+      },
+      amber: {
+        border: 'border-l-amber-500',
+        active: 'bg-amber-600/15 text-amber-300 font-semibold',
+        icon: 'text-amber-400'
+      }
+    }[accentColor] || {
+      border: 'border-l-blue-500',
+      active: 'bg-blue-600/15 text-blue-300 font-semibold',
+      icon: 'text-blue-400'
+    };
+
+    if (sidebarCollapsed) {
+      return (
+        <button
+          key={item.id}
+          onClick={() => setActiveScreen(item.id)}
+          title={`${item.label}${item.badge !== undefined && item.badge !== null ? ` (${item.badge})` : ''}`}
+          className={`relative w-10 h-10 mx-auto my-0.5 rounded-lg flex items-center justify-center transition-all duration-150 ${
+            isActive
+              ? `${accentClasses.active} border border-slate-700/80 shadow-xs`
+              : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
+          }`}
+        >
+          <Icon className={`w-4 h-4 shrink-0 ${isActive ? accentClasses.icon : 'text-slate-400'}`} />
+          {item.badge !== undefined && item.badge !== null && (
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-[#0F172A]" />
+          )}
+        </button>
+      );
+    }
+
+    return (
+      <button
+        key={item.id}
+        onClick={() => setActiveScreen(item.id)}
+        className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs transition-all duration-150 border-l-2 select-none ${
+          isActive
+            ? `${accentClasses.active} ${accentClasses.border} shadow-2xs`
+            : 'border-l-transparent text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+        }`}
+      >
+        <div className="flex items-center gap-2.5 min-w-0">
+          <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? accentClasses.icon : 'text-slate-400'}`} />
+          <span className="truncate">{item.label}</span>
+        </div>
+        {item.badge !== undefined && item.badge !== null && (
+          <span
+            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold font-mono tracking-tight shrink-0 border ml-2 ${
+              item.badgeColor || 'bg-slate-700/80 text-slate-200 border-slate-600/60'
+            }`}
+          >
+            {item.isLive && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
+            {item.badge}
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  const renderNavSectionHeader = (title: string, sectionKey: string, indicatorColor: string, count?: number) => {
+    if (sidebarCollapsed) {
+      return <div className="h-px bg-slate-800/80 my-2 mx-2" />;
+    }
+    const isExpanded = expandedSections[sectionKey];
+    return (
+      <button
+        onClick={() => toggleSection(sectionKey)}
+        className="w-full flex items-center justify-between px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-200 rounded hover:bg-slate-800/40 transition group select-none"
+      >
+        <div className="flex items-center gap-2">
+          <span className={`w-1.5 h-1.5 rounded-full ${indicatorColor} shrink-0`} />
+          <span>{title}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {count !== undefined && (
+            <span className="text-[9px] font-mono font-medium px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700/60">
+              {count}
+            </span>
+          )}
+          <ChevronDown
+            className={`w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-200 ${
+              isExpanded ? 'rotate-0' : '-rotate-90'
+            }`}
+          />
+        </div>
+      </button>
+    );
   };
 
   return (
@@ -2166,226 +2316,148 @@ export default function App() {
       {/* ====================================================================
           LEFT SIDEBAR NAVIGATION (#0F172A Deep Navy)
       ==================================================================== */}
-      <aside className="w-68 bg-[#0F172A] text-slate-300 flex flex-col border-r border-slate-800 shrink-0">
+      <aside
+        className={`${
+          sidebarCollapsed ? 'w-16' : 'w-72'
+        } bg-[#0F172A] text-slate-300 flex flex-col border-r border-slate-800/80 shrink-0 transition-all duration-200 ease-in-out select-none`}
+      >
         {/* Brand Header */}
-        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-800/80 bg-[#0B1120]">
-          <button
-            onClick={() => setActiveScreen('command-center')}
-            className="flex items-center gap-3 text-left group focus:outline-none"
-          >
-            <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-inner shadow-blue-400/30 group-hover:bg-blue-500 transition">
-              Pr
+        <div className="h-16 px-3.5 flex items-center justify-between border-b border-slate-800/80 bg-[#0B1120] shrink-0">
+          {!sidebarCollapsed ? (
+            <>
+              <button
+                onClick={() => setActiveScreen('command-center')}
+                className="flex items-center gap-3 text-left group focus:outline-none min-w-0"
+              >
+                <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-inner shadow-blue-400/30 group-hover:bg-blue-500 transition shrink-0">
+                  Pr
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-white tracking-tight text-base">Pr AiiA</span>
+                    <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold border border-blue-500/30">
+                      Enterprise
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-none mt-0.5 truncate">Autonomous IT, SecOps & GRC</p>
+                </div>
+              </button>
+              <button
+                onClick={() => setSidebarCollapsed(true)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                title="Collapse Sidebar (Ctrl+B)"
+              >
+                <PanelLeftClose className="w-4 h-4" />
+              </button>
+            </>
+          ) : (
+            <div className="w-full flex flex-col items-center gap-2">
+              <button
+                onClick={() => setSidebarCollapsed(false)}
+                className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-inner shadow-blue-400/30 hover:bg-blue-500 transition"
+                title="Expand Sidebar (Ctrl+B)"
+              >
+                Pr
+              </button>
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-white tracking-tight text-base">Pr AiiA</span>
-                <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold border border-blue-500/30">
-                  Enterprise
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-none mt-0.5">Autonomous IT, SecOps & GRC</p>
-            </div>
-          </button>
+          )}
         </div>
 
         {/* Scrollable Navigation List */}
-        <div className="flex-1 overflow-y-auto py-3 px-2.5 space-y-4 custom-scrollbar">
-          {/* Command Center */}
+        <div className="flex-1 overflow-y-auto py-3 px-2 space-y-3.5 custom-scrollbar">
+          {/* Command Center Dashboard */}
           <div>
-            <button
-              onClick={() => setActiveScreen('command-center')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition ${
-                activeScreen === 'command-center'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <Compass className="w-4 h-4 shrink-0" />
-                <span>Command Center</span>
-              </div>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-white">Live</span>
-            </button>
+            {renderNavRow(
+              {
+                id: 'command-center',
+                label: 'Command Center',
+                icon: Compass,
+                badge: 'Live',
+                isLive: true,
+                badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+              },
+              'blue'
+            )}
           </div>
 
-          {/* PRODUCT A: Pr AiiA PLATFORM */}
+          {/* Section 1: Pr AiiA Platform */}
           <div>
-            <button
-              onClick={() => toggleSection('platform')}
-              className="w-full flex items-center justify-between px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-blue-400 hover:text-blue-300"
-            >
-              <span>Pr AiiA Platform</span>
-              {expandedSections.platform ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-            </button>
-            {expandedSections.platform && (
+            {renderNavSectionHeader('Pr AiiA Platform', 'platform', 'bg-blue-500', navStructure.platform.length)}
+            {(expandedSections.platform || sidebarCollapsed) && (
               <div className="mt-1 space-y-0.5">
-                {navStructure.platform.map((item) => {
-                  const Icon = item.icon;
-                  const isActive =
-                    activeScreen === item.id ||
-                    (item.id === 'itsm' && activeScreen === 'incident-detail') ||
-                    (item.id === 'endpoints' && activeScreen === 'endpoint-detail') ||
-                    (item.id === 'supply-chain' && activeScreen === 'supply-chain-detail') ||
-                    (item.id === 'crm' && activeScreen === 'crm-detail');
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveScreen(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs transition ${
-                        isActive
-                          ? 'bg-slate-800 text-white font-medium border-l-2 border-blue-500'
-                          : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 truncate">
-                        <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
-                        <span className="truncate">{item.label}</span>
-                      </div>
-                      {item.badge !== undefined && item.badge !== null && (
-                        <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded-full font-medium ${
-                            item.badgeColor || 'bg-slate-700 text-slate-200'
-                          }`}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
+                {navStructure.platform.map((item) => renderNavRow(item, 'blue'))}
               </div>
             )}
           </div>
 
-          {/* PRODUCT B: Pr AiiA GRC */}
+          {/* Section 2: Pr AiiA GRC */}
           <div>
-            <button
-              onClick={() => toggleSection('grc')}
-              className="w-full flex items-center justify-between px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-emerald-400 hover:text-emerald-300"
-            >
-              <span>Pr AiiA GRC</span>
-              {expandedSections.grc ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-            </button>
-            {expandedSections.grc && (
+            {renderNavSectionHeader('Pr AiiA GRC', 'grc', 'bg-emerald-500', navStructure.grc.length)}
+            {(expandedSections.grc || sidebarCollapsed) && (
               <div className="mt-1 space-y-0.5">
-                {navStructure.grc.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeScreen === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveScreen(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs transition ${
-                        isActive
-                          ? 'bg-slate-800 text-white font-medium border-l-2 border-emerald-500'
-                          : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 truncate">
-                        <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
-                        <span className="truncate">{item.label}</span>
-                      </div>
-                      {item.badge && (
-                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-medium ${item.badgeColor}`}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
+                {navStructure.grc.map((item) => renderNavRow(item, 'emerald'))}
               </div>
             )}
           </div>
 
-          {/* AI WORKFORCE & FIREWALL */}
+          {/* Section 3: AI Workforce & Control */}
           <div>
-            <button
-              onClick={() => toggleSection('aiWorkforce')}
-              className="w-full flex items-center justify-between px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-purple-400 hover:text-purple-300"
-            >
-              <span>AI Workforce & Control</span>
-              {expandedSections.aiWorkforce ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-            </button>
-            {expandedSections.aiWorkforce && (
+            {renderNavSectionHeader('AI Workforce & Control', 'aiWorkforce', 'bg-purple-500', navStructure.aiWorkforce.length)}
+            {(expandedSections.aiWorkforce || sidebarCollapsed) && (
               <div className="mt-1 space-y-0.5">
-                {navStructure.aiWorkforce.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeScreen === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveScreen(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs transition ${
-                        isActive
-                          ? 'bg-slate-800 text-white font-medium border-l-2 border-purple-500'
-                          : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 truncate">
-                        <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-purple-400' : 'text-slate-400'}`} />
-                        <span className="truncate">{item.label}</span>
-                      </div>
-                      {item.badge && (
-                        <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded-full font-medium ${
-                            item.badgeColor || 'bg-purple-500/20 text-purple-300'
-                          }`}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
+                {navStructure.aiWorkforce.map((item) => renderNavRow(item, 'purple'))}
               </div>
             )}
           </div>
 
-          {/* SYSTEM & ANALYTICS */}
-          <div className="pt-2 border-t border-slate-800/80 space-y-0.5">
-            <button
-              onClick={() => setActiveScreen('reports')}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs transition ${
-                activeScreen === 'reports' ? 'bg-slate-800 text-white font-medium' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-              }`}
-            >
-              <BarChart3 className="w-3.5 h-3.5" />
-              <span>Reports & Executive Analytics</span>
-            </button>
-            <button
-              onClick={() => setActiveScreen('administration')}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs transition ${
-                activeScreen === 'administration' ? 'bg-slate-800 text-white font-medium' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-              }`}
-            >
-              <Sliders className="w-3.5 h-3.5" />
-              <span>Administration & Guardrails</span>
-            </button>
-            <button
-              onClick={() => setActiveScreen('settings')}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs transition ${
-                activeScreen === 'settings' ? 'bg-slate-800 text-white font-medium' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-              }`}
-            >
-              <Settings className="w-3.5 h-3.5" />
-              <span>Platform Settings</span>
-            </button>
+          {/* Section 4: Administration & Governance */}
+          <div>
+            {renderNavSectionHeader('Governance & Platform', 'admin', 'bg-amber-500', navStructure.admin.length)}
+            {(expandedSections.admin || sidebarCollapsed) && (
+              <div className="mt-1 space-y-0.5">
+                {navStructure.admin.map((item) => renderNavRow(item, 'amber'))}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Sidebar Footer Status */}
-        <div className="p-3 border-t border-slate-800 bg-[#0B1120] text-[11px] text-slate-400 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Neural Mesh v4.18 Online</span>
-          </div>
-          <button
-            onClick={handleResetDemo}
-            title="Reset demo state to beginning of scenario"
-            className="text-slate-400 hover:text-white underline text-[11px]"
-          >
-            Reset Demo
-          </button>
+        <div className="p-2.5 border-t border-slate-800/80 bg-[#0B1120] shrink-0">
+          {!sidebarCollapsed ? (
+            <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/80 flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[11px] font-semibold text-slate-200 leading-tight truncate">Neural Mesh v4.18</div>
+                  <div className="text-[10px] text-emerald-400/90 font-mono">Active & Governed</div>
+                </div>
+              </div>
+              <button
+                onClick={handleResetDemo}
+                title="Reset demo state to beginning of scenario"
+                className="text-[10px] font-semibold px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition shadow-2xs shrink-0"
+              >
+                Reset
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2 py-1">
+              <div className="relative flex h-2.5 w-2.5" title="Neural Mesh v4.18 Online">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </div>
+              <button
+                onClick={handleResetDemo}
+                title="Reset Demo State"
+                className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -2394,9 +2466,17 @@ export default function App() {
       ==================================================================== */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Navigation Header */}
-        <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 z-20">
-          {/* Global Search */}
-          <div className="relative w-96">
+        <header className="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between shrink-0 z-20 gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 transition"
+              title={sidebarCollapsed ? "Expand Sidebar (Ctrl+B)" : "Collapse Sidebar (Ctrl+B)"}
+            >
+              {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+            </button>
+            {/* Global Search */}
+            <div className="relative w-72 sm:w-96">
             <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 focus-within:border-blue-500 focus-within:bg-white transition">
               <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
               <input
@@ -2443,6 +2523,7 @@ export default function App() {
                 )}
               </div>
             )}
+            </div>
           </div>
 
           {/* Right Header Controls */}
